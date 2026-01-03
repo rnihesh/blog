@@ -44,9 +44,9 @@ export default async function BlogPage({ params }: BlogPageProps) {
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-12 max-w-3xl">
-        <Button asChild variant="ghost" className="mb-8">
+        <Button asChild variant="ghost" className="mb-8 -ml-4">
           <Link href="/">
-            Back to all posts
+            ← Back to all posts
           </Link>
         </Button>
 
@@ -100,7 +100,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
         <div className="mt-12 pt-8 border-t border-border">
           <Button asChild size="lg">
             <Link href="/">
-              View All Posts
+              View All Posts →
             </Link>
           </Button>
         </div>
