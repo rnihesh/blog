@@ -101,7 +101,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
         <div className="mt-12 pt-8 border-t border-border">
           <Link 
             href="/"
-            className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-md font-medium hover:bg-primary/90 transition-colors text-base"
+            className="inline-flex items-center justify-center bg-primary text-primary-foreground px-8 py-3 rounded-md font-medium hover:bg-primary/90 transition-colors text-base"
           >
             View All Posts →
           </Link>
