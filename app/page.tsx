@@ -31,6 +31,7 @@ export default function Home() {
                 <Link 
                   href={`/${blog.unique_name}`}
                   className="text-foreground hover:underline whitespace-nowrap font-medium"
+                  aria-label={`Read more about ${blog.title}`}
                 >
                   Read More →
                 </Link>
