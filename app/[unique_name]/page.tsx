@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import blogs from '../../blogs.json'
-import { Button } from '@/components/ui/button'
 
 interface BlogPageProps {
   params: Promise<{
@@ -44,11 +43,12 @@ export default async function BlogPage({ params }: BlogPageProps) {
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-12 max-w-3xl">
-        <Button asChild variant="ghost" className="mb-8">
-          <Link href="/">
-            ← Back to all posts
-          </Link>
-        </Button>
+        <Link 
+          href="/"
+          className="inline-block text-foreground hover:underline mb-8 font-medium"
+        >
+          ← Back to all posts
+        </Link>
 
         <article>
           <header className="mb-8">
@@ -98,12 +98,13 @@ export default async function BlogPage({ params }: BlogPageProps) {
           </div>
         </article>
 
-        <div className="mt-12 pt-8 border-t border-border -mx-4 px-4">
-          <Button asChild size="lg">
-            <Link href="/">
-              View All Posts →
-            </Link>
-          </Button>
+        <div className="mt-12 pt-8 border-t border-border">
+          <Link 
+            href="/"
+            className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-md font-medium hover:bg-primary/90 transition-colors text-base"
+          >
+            View All Posts →
+          </Link>
         </div>
       </div>
     </div>
