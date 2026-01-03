@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import blogs from '../blogs.json'
-import { Button } from '@/components/ui/button'
 
 export default function Home() {
   return (
@@ -27,8 +26,16 @@ export default function Home() {
                 <span className="mx-2">•</span>
                 <span>{blog.date}</span>
               </div>
-              <p className="text-muted-foreground mb-4">{blog.excerpt}</p>
-              <div className="flex flex-wrap gap-2 mb-4">
+              <div className="flex items-start justify-between gap-4">
+                <p className="text-muted-foreground flex-1">{blog.excerpt}</p>
+                <Link 
+                  href={`/${blog.unique_name}`}
+                  className="text-foreground hover:underline whitespace-nowrap font-medium"
+                >
+                  Read More →
+                </Link>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-4">
                 {blog.tags.map((tag) => (
                   <span
                     key={tag}
@@ -38,11 +45,6 @@ export default function Home() {
                   </span>
                 ))}
               </div>
-              <Button asChild size="lg">
-                <Link href={`/${blog.unique_name}`}>
-                  Read More
-                </Link>
-              </Button>
             </article>
           ))}
         </div>
