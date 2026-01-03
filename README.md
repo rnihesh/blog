@@ -1,29 +1,34 @@
 # Blog Application
 
-A modern blog application built with Next.js 16, React 19, TypeScript, and Tailwind CSS. Features dynamic routing, markdown rendering, and a beautiful responsive UI.
+A modern blog application built with Next.js 16, React 19, TypeScript, and Tailwind CSS. Features dynamic routing, markdown rendering, and a clean responsive UI with dark/light theme support.
 
 ## Features
 
-- 📝 **Markdown Support**: Full markdown rendering with support for:
+- **Markdown Support**: Full markdown rendering with support for:
   - **Bold** and *italic* text
   - Code blocks with syntax highlighting (JavaScript, Python, Bash, etc.)
   - Lists (ordered and unordered)
   - Blockquotes
   - Links and more
 
-- 🎨 **Beautiful UI**: Clean, modern design with:
-  - Gradient backgrounds
-  - Card-based layouts
-  - Responsive grid system
-  - Hover effects and transitions
+- **Clean UI**: Minimalist design with:
+  - Black and gray color scheme
+  - Vertical blog listing layout
+  - Large, accessible buttons
+  - Smooth theme transitions
 
-- 🚀 **Next.js App Router**: 
+- **Theme Support**:
+  - Light and dark mode
+  - System theme detection
+  - Theme toggle button
+
+- **Next.js App Router**: 
   - Server-side rendering
   - Static site generation
   - Dynamic routes for blog posts
   - SEO-friendly metadata
 
-- 📦 **JSON-based Content**: Blog posts stored in `blogs.json` for easy management
+- **JSON-based Content**: Blog posts stored in `blogs.json` for easy management
 
 ## Getting Started
 

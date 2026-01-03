@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import blogs from '../../blogs.json'
+import { Button } from '@/components/ui/button'
 
 interface BlogPageProps {
   params: Promise<{
@@ -41,71 +42,67 @@ export default async function BlogPage({ params }: BlogPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
-          <Link
-            href="/"
-            className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-8 font-medium"
-          >
-            ← Back to all posts
+    <div className="min-h-screen">
+      <div className="container mx-auto px-4 py-12 max-w-3xl">
+        <Button asChild variant="ghost" className="mb-8">
+          <Link href="/">
+            Back to all posts
           </Link>
+        </Button>
 
-          <article className="bg-white rounded-lg shadow-lg p-8 md:p-12">
-            <header className="mb-8">
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                {blog.title}
-              </h1>
-              <div className="flex items-center text-gray-600 mb-4">
-                <span className="font-medium">{blog.author}</span>
-                <span className="mx-2">•</span>
-                <span>{blog.date}</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {blog.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </header>
-
-            <div className="markdown-content prose prose-lg max-w-none">
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  pre({ node, children, ...props }: any) {
-                    return <pre {...props}>{children}</pre>
-                  },
-                  code({ node, inline, className, children, ...props }: any) {
-                    return inline ? (
-                      <code className={className} {...props}>
-                        {children}
-                      </code>
-                    ) : (
-                      <code className={className} {...props}>
-                        {children}
-                      </code>
-                    )
-                  },
-                }}
-              >
-                {blog.body}
-              </ReactMarkdown>
+        <article>
+          <header className="mb-8">
+            <h1 className="text-4xl font-bold mb-4">
+              {blog.title}
+            </h1>
+            <div className="flex items-center text-muted-foreground mb-4">
+              <span>{blog.author}</span>
+              <span className="mx-2">•</span>
+              <span>{blog.date}</span>
             </div>
-          </article>
+            <div className="flex flex-wrap gap-2">
+              {blog.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs px-2 py-1 rounded bg-muted text-foreground"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </header>
 
-          <div className="mt-8 text-center">
-            <Link
-              href="/"
-              className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+          <div className="markdown-content">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                pre({ node, children, ...props }: any) {
+                  return <pre {...props}>{children}</pre>
+                },
+                code({ node, inline, className, children, ...props }: any) {
+                  return inline ? (
+                    <code className={className} {...props}>
+                      {children}
+                    </code>
+                  ) : (
+                    <code className={className} {...props}>
+                      {children}
+                    </code>
+                  )
+                },
+              }}
             >
+              {blog.body}
+            </ReactMarkdown>
+          </div>
+        </article>
+
+        <div className="mt-12 pt-8 border-t border-border">
+          <Button asChild size="lg">
+            <Link href="/">
               View All Posts
             </Link>
-          </div>
+          </Button>
         </div>
       </div>
     </div>
