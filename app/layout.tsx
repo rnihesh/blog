@@ -3,12 +3,76 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://blog.niheshr.com";
+
 export const metadata: Metadata = {
-  title: "My Blog",
-  description: "A blog built with Next.js",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Nihesh's Blog",
+    template: "%s | Nihesh's Blog",
+  },
+  description:
+    "Technical articles, tutorials, and thoughts on web development, DevOps, and software engineering by Nihesh.",
+  keywords: [
+    "blog",
+    "web development",
+    "programming",
+    "tutorials",
+    "nextjs",
+    "react",
+    "devops",
+    "webrtc",
+  ],
+  authors: [{ name: "Nihesh", url: siteUrl }],
+  creator: "Nihesh",
+  publisher: "Nihesh",
   icons: {
     icon: "/nihesh.png",
     apple: "/apple-touch-icon.png",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteUrl,
+    siteName: "Nihesh's Blog",
+    title: "Nihesh's Blog",
+    description:
+      "Technical articles, tutorials, and thoughts on web development, DevOps, and software engineering.",
+    images: [
+      {
+        url: "/nihesh.png",
+        width: 512,
+        height: 512,
+        alt: "Nihesh's Blog",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nihesh's Blog",
+    description:
+      "Technical articles, tutorials, and thoughts on web development, DevOps, and software engineering.",
+    images: ["/nihesh.png"],
+    creator: "@nihesh",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    // Add your verification codes here when you have them
+    // google: "your-google-verification-code",
+    // yandex: "your-yandex-verification-code",
+  },
+  alternates: {
+    canonical: siteUrl,
   },
 };
 
