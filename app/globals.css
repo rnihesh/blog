@@ -68,12 +68,6 @@ body {
   color: black;
 }
 
-/* Prevent line numbers from being selectable in code blocks */
-.react-syntax-highlighter-line-number {
-  user-select: none !important;
-  -webkit-user-select: none !important;
-}
-
 .markdown-content {
   max-width: none;
 }
