@@ -34,14 +34,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: siteUrl,
+    url: "https://blog.niheshr.com",
     siteName: "Nihesh's Blog",
     title: "Nihesh's Blog",
     description:
       "Technical articles, tutorials, and thoughts on web development, DevOps, and software engineering.",
     images: [
       {
-        url: "/nihesh.png",
+        url: "https://blog.niheshr.com/nihesh.png",
         width: 512,
         height: 512,
         alt: "Nihesh's Blog",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     title: "Nihesh's Blog",
     description:
       "Technical articles, tutorials, and thoughts on web development, DevOps, and software engineering.",
-    images: ["/nihesh.png"],
+    images: ["https://blog.niheshr.com/nihesh.png"],
     creator: "@nihesh",
   },
   robots: {
@@ -85,6 +85,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta
+          property="og:logo"
+          content="https://blog.niheshr.com/nihesh.png"
+        />
         <link rel="icon" type="image/png" href="/nihesh.png" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

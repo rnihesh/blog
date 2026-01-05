@@ -45,12 +45,12 @@ export async function generateMetadata({ params }: BlogPageProps) {
       siteName: "Nihesh's Blog",
       title: blog.title,
       description: blog.excerpt,
-      publishedTime: blog.date,
+      publishedTime: `${blog.date}T00:00:00+05:30`,
       authors: [blog.author],
       tags: blog.tags,
       images: [
         {
-          url: "/nihesh.png",
+          url: `${siteUrl}/nihesh.png`,
           width: 512,
           height: 512,
           alt: blog.title,
@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: BlogPageProps) {
       card: "summary_large_image",
       title: blog.title,
       description: blog.excerpt,
-      images: ["/nihesh.png"],
+      images: [`${siteUrl}/nihesh.png`],
     },
     alternates: {
       canonical: blogUrl,
