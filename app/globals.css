@@ -54,7 +54,7 @@
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
-  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-family: "Space Grotesk", system-ui, sans-serif;
 }
 
 .markdown-content {
@@ -151,4 +151,3 @@ body {
 .markdown-content em {
   font-style: italic;
 }
-

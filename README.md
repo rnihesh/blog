@@ -5,7 +5,7 @@ A modern blog application built with Next.js 16, React 19, TypeScript, and Tailw
 ## Features
 
 - **Markdown Support**: Full markdown rendering with support for:
-  - **Bold** and *italic* text
+  - **Bold** and _italic_ text
   - Code blocks with syntax highlighting (JavaScript, Python, Bash, etc.)
   - Lists (ordered and unordered)
   - Blockquotes
@@ -22,7 +22,7 @@ A modern blog application built with Next.js 16, React 19, TypeScript, and Tailw
   - System theme detection
   - Theme toggle button
 
-- **Next.js App Router**: 
+- **Next.js App Router**:
   - Server-side rendering
   - Static site generation
   - Dynamic routes for blog posts
@@ -39,17 +39,20 @@ A modern blog application built with Next.js 16, React 19, TypeScript, and Tailw
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/rnihesh/blog.git
 cd blog
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -96,13 +99,13 @@ The `unique_name` will be used as the URL path (e.g., `/my-new-post`).
 The blog supports GitHub Flavored Markdown (GFM) including:
 
 - Headers (H1-H6)
-- **Bold**, *italic*, and ***bold italic*** text
+- **Bold**, _italic_, and **_bold italic_** text
 - ~~Strikethrough~~
 - Inline `code`
 - Code blocks with language syntax:
   ````markdown
   ```javascript
-  console.log('Hello!');
+  console.log("Hello!");
   ```
   ````
 - Lists (bulleted and numbered)

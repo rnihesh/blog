@@ -1,5 +1,5 @@
-import Link from 'next/link'
-import blogs from '../blogs.json'
+import Link from "next/link";
+import blogs from "../blogs.json";
 
 export default function Home() {
   return (
@@ -7,7 +7,9 @@ export default function Home() {
       <div className="container mx-auto px-4 py-12 max-w-3xl">
         <header className="mb-16">
           <h1 className="text-4xl font-bold mb-2">My Blog</h1>
-          <p className="text-muted-foreground">Welcome to my collection of thoughts and tutorials</p>
+          <p className="text-muted-foreground">
+            Welcome to my collection of thoughts and tutorials
+          </p>
         </header>
 
         <div className="space-y-8">
@@ -28,7 +30,7 @@ export default function Home() {
               </div>
               <div className="flex items-start justify-between gap-4">
                 <p className="text-muted-foreground flex-1">{blog.excerpt}</p>
-                <Link 
+                <Link
                   href={`/${blog.unique_name}`}
                   className="text-foreground hover:underline whitespace-nowrap font-medium"
                   aria-label={`Read more about ${blog.title}`}
@@ -51,5 +53,5 @@ export default function Home() {
         </div>
       </div>
     </div>
-  )
+  );
 }

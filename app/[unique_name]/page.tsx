@@ -1,49 +1,49 @@
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import blogs from '../../blogs.json'
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import blogs from "../../blogs.json";
 
 interface BlogPageProps {
   params: Promise<{
-    unique_name: string
-  }>
+    unique_name: string;
+  }>;
 }
 
 export async function generateStaticParams() {
   return blogs.map((blog) => ({
     unique_name: blog.unique_name,
-  }))
+  }));
 }
 
 export async function generateMetadata({ params }: BlogPageProps) {
-  const resolvedParams = await params
-  const blog = blogs.find((b) => b.unique_name === resolvedParams.unique_name)
-  
+  const resolvedParams = await params;
+  const blog = blogs.find((b) => b.unique_name === resolvedParams.unique_name);
+
   if (!blog) {
     return {
-      title: 'Blog Not Found',
-    }
+      title: "Blog Not Found",
+    };
   }
 
   return {
     title: blog.title,
     description: blog.excerpt,
-  }
+  };
 }
 
 export default async function BlogPage({ params }: BlogPageProps) {
-  const resolvedParams = await params
-  const blog = blogs.find((b) => b.unique_name === resolvedParams.unique_name)
+  const resolvedParams = await params;
+  const blog = blogs.find((b) => b.unique_name === resolvedParams.unique_name);
 
   if (!blog) {
-    notFound()
+    notFound();
   }
 
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-12 max-w-3xl">
-        <Link 
+        <Link
           href="/"
           className="inline-block text-foreground hover:underline mb-8 font-medium"
         >
@@ -52,9 +52,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
 
         <article>
           <header className="mb-8">
-            <h1 className="text-4xl font-bold mb-4">
-              {blog.title}
-            </h1>
+            <h1 className="text-4xl font-bold mb-4">{blog.title}</h1>
             <div className="flex items-center text-muted-foreground mb-4">
               <span>{blog.author}</span>
               <span className="mx-2">•</span>
@@ -78,7 +76,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
               components={{
                 h1: () => null, // Skip H1 as it's already shown in the header
                 pre({ node, children, ...props }: any) {
-                  return <pre {...props}>{children}</pre>
+                  return <pre {...props}>{children}</pre>;
                 },
                 code({ node, inline, className, children, ...props }: any) {
                   return inline ? (
@@ -89,7 +87,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
                     <code className={className} {...props}>
                       {children}
                     </code>
-                  )
+                  );
                 },
               }}
             >
@@ -99,7 +97,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
         </article>
 
         <div className="mt-12 pt-8 border-t border-border">
-          <Link 
+          <Link
             href="/"
             className="inline-flex items-center justify-center bg-primary text-primary-foreground px-8 py-3 rounded-md font-medium hover:bg-primary/90 transition-colors text-base"
           >
@@ -108,5 +106,5 @@ export default async function BlogPage({ params }: BlogPageProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }
