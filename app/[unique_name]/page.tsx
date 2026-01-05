@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import blogs from "../../blogs.json";
+import { getAllPosts, getPostBySlug } from "@/lib/posts";
 
 interface BlogPageProps {
   params: Promise<{
@@ -11,14 +11,15 @@ interface BlogPageProps {
 }
 
 export async function generateStaticParams() {
-  return blogs.map((blog) => ({
-    unique_name: blog.unique_name,
+  const posts = getAllPosts();
+  return posts.map((post) => ({
+    unique_name: post.unique_name,
   }));
 }
 
 export async function generateMetadata({ params }: BlogPageProps) {
   const resolvedParams = await params;
-  const blog = blogs.find((b) => b.unique_name === resolvedParams.unique_name);
+  const blog = getPostBySlug(resolvedParams.unique_name);
 
   if (!blog) {
     return {
@@ -34,7 +35,7 @@ export async function generateMetadata({ params }: BlogPageProps) {
 
 export default async function BlogPage({ params }: BlogPageProps) {
   const resolvedParams = await params;
-  const blog = blogs.find((b) => b.unique_name === resolvedParams.unique_name);
+  const blog = getPostBySlug(resolvedParams.unique_name);
 
   if (!blog) {
     notFound();
@@ -74,7 +75,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
-                h1: () => null, // Skip H1 as it's already shown in the header
+                // h1: () => null, // Skip H1 as it's already shown in the header
                 pre({ node, children, ...props }: any) {
                   return <pre {...props}>{children}</pre>;
                 },

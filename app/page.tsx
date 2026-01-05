@@ -1,7 +1,9 @@
 import Link from "next/link";
-import blogs from "../blogs.json";
+import { getAllPosts } from "@/lib/posts";
 
 export default function Home() {
+  const blogs = getAllPosts();
+
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-12 max-w-3xl">
