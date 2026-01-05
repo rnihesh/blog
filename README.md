@@ -64,7 +64,7 @@ npm run dev
 ```
 blog/
 ├── app/
-│   ├── [unique_name]/    # Dynamic route for individual blog posts
+│   ├── [name]/    # Dynamic route for individual blog posts
 │   │   └── page.tsx
 │   ├── globals.css       # Global styles and markdown styling
 │   ├── layout.tsx        # Root layout component
@@ -82,7 +82,7 @@ To add a new blog post, edit the `blogs.json` file and add a new entry:
 
 ```json
 {
-  "unique_name": "my-new-post",
+  "name": "my-new-post",
   "title": "My New Post",
   "author": "Your Name",
   "date": "2026-01-03",
@@ -92,7 +92,7 @@ To add a new blog post, edit the `blogs.json` file and add a new entry:
 }
 ```
 
-The `unique_name` will be used as the URL path (e.g., `/my-new-post`).
+The `name` will be used as the URL path (e.g., `/my-new-post`).
 
 ## Markdown Features
 

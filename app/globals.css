@@ -57,6 +57,23 @@ body {
   font-family: "Space Grotesk", system-ui, sans-serif;
 }
 
+/* Text selection styling - only on actual content */
+::selection {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+}
+
+.dark ::selection {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: black;
+}
+
+/* Prevent line numbers from being selectable in code blocks */
+.react-syntax-highlighter-line-number {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
 .markdown-content {
   max-width: none;
 }
@@ -108,16 +125,15 @@ body {
   padding: 0.125rem 0.375rem;
   border-radius: 0.25rem;
   font-size: 0.875rem;
-  font-family: ui-monospace, monospace;
+  font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
 }
 
 .markdown-content pre {
-  background-color: hsl(var(--muted));
-  padding: 1rem;
-  border-radius: 0.5rem;
-  overflow-x: auto;
-  margin-bottom: 1rem;
-  border: 1px solid hsl(var(--border));
+  margin-bottom: 0;
+  overflow: visible;
+  background: transparent;
+  padding: 0;
+  border: none;
 }
 
 .markdown-content pre code {

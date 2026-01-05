@@ -5,7 +5,7 @@ import matter from "gray-matter";
 const contentDirectory = path.join(process.cwd(), "content");
 
 export interface BlogPost {
-  unique_name: string;
+  name: string;
   title: string;
   author: string;
   date: string;
@@ -19,13 +19,13 @@ export function getAllPosts(): BlogPost[] {
   const posts = fileNames
     .filter((fileName) => fileName.endsWith(".md"))
     .map((fileName) => {
-      const unique_name = fileName.replace(/\.md$/, "");
+      const name = fileName.replace(/\.md$/, "");
       const fullPath = path.join(contentDirectory, fileName);
       const fileContents = fs.readFileSync(fullPath, "utf8");
       const { data, content } = matter(fileContents);
 
       return {
-        unique_name,
+        name,
         title: data.title,
         author: data.author,
         date: data.date,
@@ -46,7 +46,7 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
     const { data, content } = matter(fileContents);
 
     return {
-      unique_name: slug,
+      name: slug,
       title: data.title,
       author: data.author,
       date: data.date,
