@@ -88,9 +88,10 @@ export default async function BlogPage({ params }: BlogPageProps) {
     author: {
       "@type": "Person",
       name: blog.author,
+      url: "https://niheshr.com",
     },
-    datePublished: blog.date,
-    dateModified: blog.date,
+    datePublished: `${blog.date}T00:00:00+05:30`,
+    dateModified: `${blog.date}T00:00:00+05:30`,
     url: blogUrl,
     mainEntityOfPage: {
       "@type": "WebPage",
@@ -100,6 +101,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
     publisher: {
       "@type": "Person",
       name: "Nihesh",
+      url: "https://niheshr.com",
       logo: {
         "@type": "ImageObject",
         url: `${siteUrl}/nihesh.png`,

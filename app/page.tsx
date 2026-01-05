@@ -23,11 +23,12 @@ export default function Home() {
       "@type": "BlogPosting",
       headline: blog.title,
       description: blog.excerpt,
-      datePublished: blog.date,
+      datePublished: `${blog.date}T00:00:00+05:30`,
       url: `${siteUrl}/${blog.name}`,
       author: {
         "@type": "Person",
         name: blog.author,
+        url: "https://niheshr.com",
       },
     })),
   };
