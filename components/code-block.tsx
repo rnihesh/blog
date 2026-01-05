@@ -80,9 +80,6 @@ export function CodeBlock({ language, children }: CodeBlockProps) {
         style={selectedTheme}
         language={language}
         PreTag="div"
-        showLineNumbers
-        wrapLongLines
-        lineNumberStyle={{ userSelect: "none" }}
         customStyle={{
           margin: 0,
           borderRadius: "0.5rem",
@@ -90,8 +87,9 @@ export function CodeBlock({ language, children }: CodeBlockProps) {
           paddingTop: "1rem",
           paddingRight: "1rem",
           paddingBottom: "1rem",
-          paddingLeft: "0.5rem",
+          paddingLeft: "1rem",
           fontFamily: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
+          overflowX: "auto",
           ...(currentTheme === "light" && { backgroundColor: "#f6f8fa" }),
         }}
         codeTagProps={{
