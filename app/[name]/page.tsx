@@ -116,7 +116,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="min-h-screen">
-        <div className="container mx-auto px-4 py-10 max-w-3xl ">
+        <div className="container mx-auto px-4 pt-4 pb-10 max-w-3xl ">
           <Link
             href="/"
             className="inline-block text-foreground hover:underline mb-8 font-medium"

@@ -40,7 +40,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="min-h-screen">
-        <div className="container mx-auto px-4 py-12 max-w-3xl">
+        <div className="container mx-auto px-4 pt-4 pb-12 max-w-3xl">
           <header className="mb-16">
             <h1 className="text-4xl font-bold mb-2">Nihesh's Blog</h1>
             <p className="text-muted-foreground">
