@@ -101,22 +101,19 @@ jobs:
             DATE_MODIFIED="${{ inputs.date }}"
           fi
           
-          # Create the markdown file with frontmatter
-          cat > "$FILEPATH" << 'EOFMARKER'
-          ---
-          title: "${{ inputs.title }}"
-          author: "${{ inputs.author }}"
-          date: "${{ inputs.date }}"
-          dateModified: "$DATE_MODIFIED"
-          tags: $TAGS_ARRAY
-          excerpt: "${{ inputs.excerpt }}"
-          ---
-
-          ${{ inputs.content }}
-          EOFMARKER
-          
-          # Clean up the heredoc indentation
-          sed -i 's/^          //' "$FILEPATH"
+          # Create the markdown file using printf to avoid shell expansion issues
+          {
+            echo "---"
+            printf 'title: "%s"\n' "${{ inputs.title }}"
+            printf 'author: "%s"\n' "${{ inputs.author }}"
+            printf 'date: "%s"\n' "${{ inputs.date }}"
+            printf 'dateModified: "%s"\n' "$DATE_MODIFIED"
+            printf 'tags: %s\n' "$TAGS_ARRAY"
+            printf 'excerpt: "%s"\n' "${{ inputs.excerpt }}"
+            echo "---"
+            echo ""
+            printf '%s\n' "${{ inputs.content }}"
+          } > "$FILEPATH"
           
           echo "Blog post created/updated: $FILEPATH"
           echo "filename=$FILENAME" >> $GITHUB_ENV

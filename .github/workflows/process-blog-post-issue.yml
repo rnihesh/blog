@@ -90,21 +90,22 @@ jobs:
           
           FILEPATH="content/${FILENAME}.md"
           
-          # Create the markdown file
-          cat > "$FILEPATH" << EOFMARKER
-          ---
-          title: "${TITLE}"
-          author: "${AUTHOR}"
-          date: "${DATE}"
-          dateModified: "${DATE_MODIFIED}"
-          tags: ${TAGS_ARRAY}
-          excerpt: "${EXCERPT}"
-          ---
-
-          ${CONTENT}
-          EOFMARKER
+          # Create the markdown file using printf to avoid shell expansion issues
+          {
+            echo "---"
+            printf 'title: "%s"\n' "$TITLE"
+            printf 'author: "%s"\n' "$AUTHOR"
+            printf 'date: "%s"\n' "$DATE"
+            printf 'dateModified: "%s"\n' "$DATE_MODIFIED"
+            printf 'tags: %s\n' "$TAGS_ARRAY"
+            printf 'excerpt: "%s"\n' "$EXCERPT"
+            echo "---"
+            echo ""
+            printf '%s\n' "$CONTENT"
+          } > "$FILEPATH"
           
           echo "filename=${FILENAME}.md" >> $GITHUB_ENV
+          echo "title=${TITLE}" >> $GITHUB_ENV
           echo "Blog post created: $FILEPATH"
       
       - name: Validate blog post
@@ -117,7 +118,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           
           git add content/${{ env.filename }}
-          git commit -m "Publish blog post: ${{ steps.parse.outputs.result.title }} (from issue #${{ github.event.issue.number }})"
+          git commit -m "Publish blog post: ${{ env.title }} (from issue #${{ github.event.issue.number }})"
           git push
       
       - name: Comment on issue
