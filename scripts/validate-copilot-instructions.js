@@ -217,10 +217,10 @@ function main() {
   
   if (warnings.length > 0) {
     log('Validation passed with warnings.', colors.yellow);
-    process.exit(0);
+  } else {
+    log('✓ All validations passed!', colors.green);
   }
   
-  log('✓ All validations passed!', colors.green);
   process.exit(0);
 }
 
