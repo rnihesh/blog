@@ -10,14 +10,37 @@ This post demonstrates various **Markdown** features.
 
 ## Text Formatting
 
+### How to Write
+
+```markdown
 - **Bold text** using double asterisks
-- _Italic text_ using single asterisks
-- **_Bold and italic_** using triple asterisks
+- _Italic text_ using underscores
+- **_Bold and italic_** combining bold and italic
+- ~~Strikethrough~~ using double tildes
+```
+
+### Result
+
+- **Bold text** using double asterisks
+- _Italic text_ using underscores
+- **_Bold and italic_** combining bold and italic
 - ~~Strikethrough~~ using double tildes
 
 ## Lists
 
 ### Unordered Lists
+
+#### How to Write
+
+```markdown
+- Item 1
+- Item 2
+  - Nested item 2.1
+  - Nested item 2.2
+- Item 3
+```
+
+#### Result
 
 - Item 1
 - Item 2
@@ -27,17 +50,46 @@ This post demonstrates various **Markdown** features.
 
 ### Ordered Lists
 
+#### How to Write
+
+```markdown
 1. First item
 2. Second item
-3. <span style="color:red">red text</span>
+3. Third item
+```
+
+#### Result
+
+1. First item
+2. Second item
+3. Third item
 
 ## Code Blocks
 
 ### Inline Code
 
+#### How to Write
+
+```markdown
+Use `console.log()` for debugging.
+```
+
+#### Result
+
 Use `console.log()` for debugging.
 
 ### JavaScript
+
+#### How to Write
+
+````markdown
+```javascript
+const greeting = "Hello, World!";
+console.log(greeting);
+```
+````
+
+#### Result
 
 ```javascript
 const greeting = "Hello, World!";
@@ -46,12 +98,35 @@ console.log(greeting);
 
 ### Python
 
+#### How to Write
+
+````markdown
+```python
+def hello_world():
+    print("Hello, World!")
+```
+````
+
+#### Result
+
 ```python
 def hello_world():
     print("Hello, World!")
 ```
 
 ### Bash
+
+#### How to Write
+
+````markdown
+```bash
+echo "Hello, World!"
+ls -la
+cd /home/user
+```
+````
+
+#### Result
 
 ```bash
 echo "Hello, World!"
@@ -61,10 +136,27 @@ cd /home/user
 
 ## Quotes
 
+### How to Write
+
+```markdown
+> This is a blockquote.
+> It can span multiple lines.
+```
+
+### Result
+
 > This is a blockquote.
 > It can span multiple lines.
 
 ## Links
+
+### How to Write
+
+```markdown
+[Visit Next.js](https://nextjs.org)
+```
+
+### Result
 
 [Visit Next.js](https://nextjs.org)
 
