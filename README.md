@@ -85,7 +85,7 @@ blog/
 │   └── utils.ts
 ├── public/                      # Static assets
 ├── scripts/                     # Utility scripts
-│   └── validate-copilot-instructions.js  # Validates copilot instructions structure
+│   └── validate-blog-posts.js  # Validates blog post markdown structure
 ├── next.config.js               # Next.js configuration
 ├── tailwind.config.ts           # Tailwind CSS configuration
 ├── tsconfig.json                # TypeScript configuration
@@ -111,6 +111,22 @@ Your markdown content here...
 ```
 
 The file name (without `.md`) will be used as the URL path (e.g., `my-new-post.md` → `/my-new-post`).
+
+### Validating Blog Posts
+
+To ensure blog posts follow the correct structure, you can run:
+
+```bash
+npm run test:blog-posts
+```
+
+This validation script checks that each markdown file in `content/`:
+- Starts with YAML frontmatter delimited by `---`
+- Contains all required fields: `title`, `author`, `date`, `excerpt`, `tags`
+- Has proper date format (YYYY-MM-DD)
+- Includes blog content after the frontmatter
+
+A GitHub Actions workflow automatically validates all blog posts when changes are pushed to the repository.
 
 ## Markdown Features
 
@@ -156,22 +172,6 @@ npm start
 ## GitHub Copilot Instructions
 
 This repository includes comprehensive GitHub Copilot coding agent instructions in `.github/copilot-instructions.md`. These instructions help Copilot understand the project structure, tech stack, code conventions, and development workflow to generate better code suggestions.
-
-### Validating Copilot Instructions
-
-To ensure the copilot instructions file maintains the correct structure, you can run:
-
-```bash
-npm run test:copilot-instructions
-```
-
-This validation script checks that:
-- The file exists at `.github/copilot-instructions.md`
-- All required sections are present (Project Overview, Tech Stack, Project Structure, Development Commands, Code Style and Conventions)
-- The file contains meaningful content with sufficient detail
-- The markdown structure is correct
-
-A GitHub Actions workflow automatically validates the file structure when changes are pushed to the repository.
 
 ## License
 
