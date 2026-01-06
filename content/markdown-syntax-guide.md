@@ -14,16 +14,16 @@ This post demonstrates various **Markdown** features.
 
 ```markdown
 - **Bold text** using double asterisks
-- _Italic text_ using single asterisks
-- **_Bold and italic_** using triple asterisks
+- _Italic text_ using underscores
+- **_Bold and italic_** combining bold and italic
 - ~~Strikethrough~~ using double tildes
 ```
 
 ### Result
 
 - **Bold text** using double asterisks
-- _Italic text_ using single asterisks
-- **_Bold and italic_** using triple asterisks
+- _Italic text_ using underscores
+- **_Bold and italic_** combining bold and italic
 - ~~Strikethrough~~ using double tildes
 
 ## Lists
