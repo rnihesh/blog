@@ -37,21 +37,21 @@ function log(message, color = colors.reset) {
 
 function error(message) {
   errors.push(message);
-  log(`✗ ${message}`, colors.red);
+  log(`[x] ${message}`, colors.red);
 }
 
 function warn(message) {
   warnings.push(message);
-  log(`⚠ ${message}`, colors.yellow);
+  log(`[!] ${message}`, colors.yellow);
 }
 
 function success(message) {
   passed++;
-  log(`✓ ${message}`, colors.green);
+  log(`[+] ${message}`, colors.green);
 }
 
 function info(message) {
-  log(`ℹ ${message}`, colors.blue);
+  log(`[*] ${message}`, colors.blue);
 }
 
 function getMarkdownFiles() {
@@ -257,7 +257,7 @@ function main() {
   if (warnings.length > 0) {
     log('Validation passed with warnings.', colors.yellow);
   } else {
-    log('✓ All blog posts are valid!', colors.green);
+    log('[+] All blog posts are valid!', colors.green);
   }
   
   process.exit(0);

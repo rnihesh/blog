@@ -40,12 +40,12 @@ jobs:
       - name: Report success
         if: success()
         run: |
-          echo "✅ Blog post validation passed!"
+          echo "[+] Blog post validation passed!"
           echo "All markdown files in content/ have correct structure."
       
       - name: Report failure
         if: failure()
         run: |
-          echo "❌ Blog post validation failed!"
+          echo "[x] Blog post validation failed!"
           echo "Please check the markdown files in content/ directory."
           exit 1

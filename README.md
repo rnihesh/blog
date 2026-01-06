@@ -175,4 +175,6 @@ This repository includes comprehensive GitHub Copilot coding agent instructions 
 
 ## License
 
-ISC
+Licensed under the Apache License, Version 2.0.
+
+© 2026 Nihesh Rachakonda
