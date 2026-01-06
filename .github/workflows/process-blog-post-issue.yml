@@ -85,8 +85,25 @@ jobs:
           TAGS=$(echo "$PARSED_DATA" | jq -r '.tags')
           CONTENT=$(echo "$PARSED_DATA" | jq -r '.content')
           
+          # Validate parsed data
+          if [ -z "$FILENAME" ] || [ "$FILENAME" = "null" ]; then
+            echo "Error: Failed to parse filename from issue"
+            exit 1
+          fi
+          if [ -z "$TITLE" ] || [ "$TITLE" = "null" ]; then
+            echo "Error: Failed to parse title from issue"
+            exit 1
+          fi
+          
+          echo "Parsed data successfully:"
+          echo "  Filename: $FILENAME"
+          echo "  Title: $TITLE"
+          echo "  Author: $AUTHOR"
+          echo "  Date: $DATE"
+          
           # Convert comma-separated tags to YAML array format
-          TAGS_ARRAY=$(echo "$TAGS" | sed 's/,/","/g' | sed 's/^/["/' | sed 's/$/"]/')
+          # Note: Individual tags should not contain commas
+          TAGS_ARRAY=$(echo "$TAGS" | sed 's/[[:space:]]*,[[:space:]]*/","/g' | sed 's/^/["/' | sed 's/$/"]/')
           
           FILEPATH="content/${FILENAME}.md"
           

@@ -29,7 +29,7 @@ on:
         required: true
         type: string
       tags:
-        description: 'Comma-separated tags (e.g., "webdev, tutorial, nextjs")'
+        description: 'Comma-separated tags (e.g., "webdev, tutorial, nextjs"). Note: Individual tags should not contain commas.'
         required: true
         type: string
       content:
@@ -58,9 +58,9 @@ jobs:
       
       - name: Validate inputs
         run: |
-          # Validate filename (no spaces, no special chars except hyphens)
-          if ! echo "${{ inputs.filename }}" | grep -qE '^[a-z0-9-]+$'; then
-            echo "Error: Filename must contain only lowercase letters, numbers, and hyphens"
+          # Validate filename (must start and end with alphanumeric, hyphens allowed in middle)
+          if ! echo "${{ inputs.filename }}" | grep -qE '^[a-z0-9]([a-z0-9-]*[a-z0-9])?$'; then
+            echo "Error: Filename must start and end with lowercase letters or numbers, and can contain hyphens in the middle"
             exit 1
           fi
           
@@ -92,14 +92,17 @@ jobs:
           fi
           
           # Convert comma-separated tags to YAML array format
+          # Note: Individual tags should not contain commas
           TAGS_INPUT="${{ inputs.tags }}"
-          TAGS_ARRAY=$(echo "$TAGS_INPUT" | sed 's/,/","/g' | sed 's/^/["/' | sed 's/$/"]/')
+          TAGS_ARRAY=$(echo "$TAGS_INPUT" | sed 's/[[:space:]]*,[[:space:]]*/","/g' | sed 's/^/["/' | sed 's/$/"]/')
           
           # Use dateModified if provided, otherwise use date
           DATE_MODIFIED="${{ inputs.dateModified }}"
           if [ -z "$DATE_MODIFIED" ]; then
             DATE_MODIFIED="${{ inputs.date }}"
           fi
+          
+          echo "Creating blog post file: $FILEPATH"
           
           # Create the markdown file using printf to avoid shell expansion issues
           {

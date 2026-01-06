@@ -69,7 +69,7 @@ body:
     id: tags
     attributes:
       label: Tags
-      description: Comma-separated tags
+      description: Comma-separated tags (Note: Individual tags should not contain commas)
       placeholder: webdev, tutorial, nextjs
     validations:
       required: true
