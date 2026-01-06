@@ -28,7 +28,7 @@ A modern blog application built with Next.js 16, React 19, TypeScript, and Tailw
   - Dynamic routes for blog posts
   - SEO-friendly metadata
 
-- **JSON-based Content**: Blog posts stored in `blogs.json` for easy management
+- **Markdown-based Content**: Blog posts stored as `.md` files in the `content/` directory with YAML frontmatter
 
 ## Getting Started
 
@@ -63,36 +63,70 @@ npm run dev
 
 ```
 blog/
+├── .github/
+│   ├── copilot-instructions.md  # GitHub Copilot coding agent instructions
+│   └── workflows/               # GitHub Actions workflows
 ├── app/
-│   ├── [name]/    # Dynamic route for individual blog posts
+│   ├── [name]/                  # Dynamic route for individual blog posts
 │   │   └── page.tsx
-│   ├── globals.css       # Global styles and markdown styling
-│   ├── layout.tsx        # Root layout component
-│   └── page.tsx          # Homepage (blog listing)
-├── blogs.json            # Blog post data
-├── next.config.js        # Next.js configuration
-├── tailwind.config.ts    # Tailwind CSS configuration
-├── tsconfig.json         # TypeScript configuration
+│   ├── globals.css              # Global styles and markdown styling
+│   ├── layout.tsx               # Root layout component
+│   └── page.tsx                 # Homepage (blog listing)
+├── components/                  # React components
+│   ├── ui/                      # UI components (buttons, etc.)
+│   ├── analytics.tsx
+│   ├── code-block.tsx
+│   ├── theme-provider.tsx
+│   └── theme-toggle.tsx
+├── content/                     # Markdown blog posts
+│   └── *.md                     # Individual blog post files
+├── lib/                         # Utility functions
+│   ├── posts.ts                 # Blog post data management
+│   └── utils.ts
+├── public/                      # Static assets
+├── scripts/                     # Utility scripts
+│   └── validate-blog-posts.js  # Validates blog post markdown structure
+├── next.config.js               # Next.js configuration
+├── tailwind.config.ts           # Tailwind CSS configuration
+├── tsconfig.json                # TypeScript configuration
 └── package.json
 ```
 
 ## Adding Blog Posts
 
-To add a new blog post, edit the `blogs.json` file and add a new entry:
+To add a new blog post, create a new `.md` file in the `content/` directory with YAML frontmatter:
 
-```json
-{
-  "name": "my-new-post",
-  "title": "My New Post",
-  "author": "Your Name",
-  "date": "2026-01-03",
-  "tags": ["tag1", "tag2"],
-  "excerpt": "A short description of the post",
-  "body": "# Title\n\nYour markdown content here..."
-}
+```markdown
+---
+title: "My New Post"
+author: "Your Name"
+date: "2026-01-03"
+excerpt: "A short description of the post"
+tags: ["tag1", "tag2"]
+---
+
+# Title
+
+Your markdown content here...
 ```
 
-The `name` will be used as the URL path (e.g., `/my-new-post`).
+The file name (without `.md`) will be used as the URL path (e.g., `my-new-post.md` → `/my-new-post`).
+
+### Validating Blog Posts
+
+To ensure blog posts follow the correct structure, you can run:
+
+```bash
+npm run test:blog-posts
+```
+
+This validation script checks that each markdown file in `content/`:
+- Starts with YAML frontmatter delimited by `---`
+- Contains all required fields: `title`, `author`, `date`, `excerpt`, `tags`
+- Has proper date format (YYYY-MM-DD)
+- Includes blog content after the frontmatter
+
+A GitHub Actions workflow automatically validates all blog posts when changes are pushed to the repository.
 
 ## Markdown Features
 
@@ -135,6 +169,12 @@ npm start
 - **react-markdown** - Markdown rendering
 - **remark-gfm** - GitHub Flavored Markdown support
 
+## GitHub Copilot Instructions
+
+This repository includes comprehensive GitHub Copilot coding agent instructions in `.github/copilot-instructions.md`. These instructions help Copilot understand the project structure, tech stack, code conventions, and development workflow to generate better code suggestions.
+
 ## License
 
-ISC
+Licensed under the Apache License, Version 2.0.
+
+© 2026 Nihesh Rachakonda

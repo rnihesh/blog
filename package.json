@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test:blog-posts": "node scripts/validate-blog-posts.js"
   },
   "keywords": [],
   "author": "",
