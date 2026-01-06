@@ -2,6 +2,7 @@
 title: "Markdown Syntax Guide"
 author: "Nihesh Rachakonda"
 date: "2026-01-03"
+dateModified: "2026-01-03"
 tags: ["markdown", "guide", "formatting"]
 excerpt: "A comprehensive guide to Markdown syntax with examples."
 ---

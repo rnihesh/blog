@@ -2,6 +2,7 @@
 title: "Setting Up a TURN Server with Coturn"
 author: "Nihesh Rachakonda"
 date: "2026-01-05"
+dateModified: "2026-01-05"
 tags: ["turn-server", "webrtc", "coturn", "stun", "nat-traversal"]
 excerpt: "Complete guide to setting up a TURN server using Coturn for WebRTC applications"
 ---

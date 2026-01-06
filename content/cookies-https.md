@@ -3,6 +3,7 @@
 title: "HttpOnly, Secure, and SameSite Cookies Explained with Real Auth Example"
 author: "Nihesh Rachakonda"
 date: "2026-01-06"
+dateModified: "2026-01-06"
 tags: ["cookies", "security", "authentication", "web-security", "xss", "csrf"]
 excerpt: "Deep dive into cookie security attributes with a practical authentication implementation example"
 ---

@@ -46,6 +46,9 @@ export async function generateMetadata({ params }: BlogPageProps) {
       title: blog.title,
       description: blog.excerpt,
       publishedTime: `${blog.date}T00:00:00+05:30`,
+      modifiedTime: blog.dateModified
+        ? `${blog.dateModified}T00:00:00+05:30`
+        : `${blog.date}T00:00:00+05:30`,
       authors: [blog.author],
       tags: blog.tags,
       images: [
@@ -91,7 +94,9 @@ export default async function BlogPage({ params }: BlogPageProps) {
       url: "https://niheshr.com",
     },
     datePublished: `${blog.date}T00:00:00+05:30`,
-    dateModified: `${blog.date}T00:00:00+05:30`,
+    dateModified: blog.dateModified
+      ? `${blog.dateModified}T00:00:00+05:30`
+      : `${blog.date}T00:00:00+05:30`,
     url: blogUrl,
     mainEntityOfPage: {
       "@type": "WebPage",

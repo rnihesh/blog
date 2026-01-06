@@ -184,6 +184,15 @@ function validateFile(filePath) {
   }
   success(`  Date format is valid (${frontmatter.date})`);
   
+  // Validate dateModified format if present (optional field)
+  if (frontmatter.dateModified) {
+    if (!dateRegex.test(frontmatter.dateModified)) {
+      error(`  dateModified format invalid. Expected YYYY-MM-DD, got: ${frontmatter.dateModified}`);
+      return false;
+    }
+    success(`  dateModified format is valid (${frontmatter.dateModified})`);
+  }
+  
   // Tags should be an array
   if (Array.isArray(frontmatter.tags)) {
     if (frontmatter.tags.length === 0) {

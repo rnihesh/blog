@@ -101,6 +101,7 @@ To add a new blog post, create a new `.md` file in the `content/` directory with
 title: "My New Post"
 author: "Your Name"
 date: "2026-01-03"
+dateModified: "2026-01-03"
 excerpt: "A short description of the post"
 tags: ["tag1", "tag2"]
 ---
@@ -111,6 +112,8 @@ Your markdown content here...
 ```
 
 The file name (without `.md`) will be used as the URL path (e.g., `my-new-post.md` → `/my-new-post`).
+
+**Note:** The `dateModified` field is optional but recommended for SEO. It's used in structured data and OpenGraph metadata but not displayed on the frontend. If not provided, the `date` field will be used as the modified date.
 
 ### Validating Blog Posts
 

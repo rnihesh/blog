@@ -2,6 +2,7 @@
 title: "Welcome to My Blog"
 author: "Nihesh Rachakonda"
 date: "2026-01-01"
+dateModified: "2026-01-01"
 tags: ["introduction", "welcome"]
 excerpt: "This is the first post on my new blog. Welcome!"
 ---

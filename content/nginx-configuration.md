@@ -2,6 +2,7 @@
 title: "Setting Up Nginx with systemd Service Files on Linux"
 author: "Nihesh Rachakonda"
 date: "2026-01-06"
+dateModified: "2026-01-06"
 tags: ["nginx", "linux", "systemd", "reverse-proxy", "deployment"]
 excerpt: "A complete guide to installing Nginx, configuring reverse proxy, and managing it using systemd service files."
 ---
