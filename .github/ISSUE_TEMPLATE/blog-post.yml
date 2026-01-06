@@ -1,0 +1,98 @@
+name: 📝 Publish Blog Post
+description: Submit a new blog post for publication
+title: "[Blog Post] "
+labels: ["blog-post", "content"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Submit a New Blog Post
+        
+        Fill out the form below to publish a new blog post. Once submitted, the post will be automatically created and committed to the repository.
+        
+  - type: input
+    id: filename
+    attributes:
+      label: Filename
+      description: The filename for your blog post (without .md extension, use lowercase and hyphens)
+      placeholder: my-awesome-blog-post
+    validations:
+      required: true
+      
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      description: The title of your blog post
+      placeholder: My Awesome Blog Post
+    validations:
+      required: true
+      
+  - type: input
+    id: author
+    attributes:
+      label: Author
+      description: Author name
+      placeholder: Nihesh Rachakonda
+      value: Nihesh Rachakonda
+    validations:
+      required: true
+      
+  - type: input
+    id: date
+    attributes:
+      label: Publication Date
+      description: Date in YYYY-MM-DD format
+      placeholder: 2026-01-07
+    validations:
+      required: true
+      
+  - type: input
+    id: dateModified
+    attributes:
+      label: Modified Date (Optional)
+      description: Date in YYYY-MM-DD format. If not provided, publication date will be used.
+      placeholder: 2026-01-07
+    validations:
+      required: false
+      
+  - type: input
+    id: excerpt
+    attributes:
+      label: Excerpt
+      description: A short description of your blog post
+      placeholder: This is a comprehensive guide to...
+    validations:
+      required: true
+      
+  - type: input
+    id: tags
+    attributes:
+      label: Tags
+      description: Comma-separated tags
+      placeholder: webdev, tutorial, nextjs
+    validations:
+      required: true
+      
+  - type: textarea
+    id: content
+    attributes:
+      label: Blog Post Content
+      description: The markdown content of your blog post
+      placeholder: |
+        ## Introduction
+        
+        Your blog post content here...
+        
+        ## Section 1
+        
+        More content...
+    validations:
+      required: true
+      
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        After submitting this issue, a GitHub Action will automatically create the blog post file and commit it to the repository.

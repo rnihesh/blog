@@ -115,6 +115,46 @@ The file name (without `.md`) will be used as the URL path (e.g., `my-new-post.m
 
 **Note:** The `dateModified` field is optional but recommended for SEO. It's used in structured data and OpenGraph metadata but not displayed on the frontend. If not provided, the `date` field will be used as the modified date.
 
+### Publishing Blog Posts via GitHub Actions
+
+You can publish blog posts without manually creating markdown files using GitHub Actions:
+
+#### Method 1: Manual Workflow Dispatch
+
+1. Go to the **Actions** tab in the GitHub repository
+2. Select **"Publish Blog Post"** workflow
+3. Click **"Run workflow"**
+4. Fill in the required fields:
+   - Filename (without .md, e.g., `my-new-post`)
+   - Title
+   - Author
+   - Publication date (YYYY-MM-DD)
+   - Modified date (optional)
+   - Excerpt
+   - Tags (comma-separated)
+   - Content (markdown)
+5. Click **"Run workflow"**
+
+The workflow will create the markdown file, validate it, and commit it to the repository.
+
+#### Method 2: Issue-Based Publishing
+
+1. Go to the **Issues** tab
+2. Click **"New issue"**
+3. Select **"📝 Publish Blog Post"** template
+4. Fill in the form fields
+5. Submit the issue
+
+The workflow will automatically:
+- Parse the issue content
+- Create the blog post file
+- Validate the structure
+- Commit and push to the repository
+- Comment on the issue with the result
+- Close the issue
+
+Both methods ensure that blog posts are validated before being published.
+
 ### Validating Blog Posts
 
 To ensure blog posts follow the correct structure, you can run:

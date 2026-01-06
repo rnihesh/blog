@@ -88,11 +88,23 @@ blog/
   - `title`: Post title
   - `author`: Author name
   - `date`: Publication date (YYYY-MM-DD format)
+  - `dateModified`: Modified date (YYYY-MM-DD format, optional - defaults to `date` if not provided)
   - `excerpt`: Short description
   - `tags`: Array of tags
+- The `dateModified` field is used in SEO metadata (JSON-LD, OpenGraph) but not displayed on frontend
 - File name (without .md) becomes the URL slug
 - Use `gray-matter` to parse frontmatter
 - Posts are sorted by date in descending order
+
+### Publishing Blog Posts
+
+Blog posts can be created in three ways:
+
+1. **Manual file creation**: Create `.md` files directly in `content/` directory
+2. **GitHub Actions Workflow**: Use "Publish Blog Post" workflow in Actions tab with manual dispatch
+3. **Issue-based publishing**: Create an issue using the "📝 Publish Blog Post" template
+
+All methods validate the blog post structure before committing.
 
 ### Naming Conventions
 

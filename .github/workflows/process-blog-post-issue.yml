@@ -1,0 +1,156 @@
+name: Process Blog Post Issue
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  process-blog-post:
+    name: Process Blog Post Submission
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'blog-post')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Parse issue body
+        id: parse
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueBody = context.payload.issue.body;
+            
+            // Parse the issue body to extract field values
+            const parseField = (body, fieldName) => {
+              const regex = new RegExp(`### ${fieldName}\\s*\\n\\s*([^\\n]+)`, 'i');
+              const match = body.match(regex);
+              return match ? match[1].trim() : '';
+            };
+            
+            const parseTextarea = (body, fieldName) => {
+              const regex = new RegExp(`### ${fieldName}\\s*\\n\\s*([\\s\\S]+?)(?=\\n### |$)`, 'i');
+              const match = body.match(regex);
+              return match ? match[1].trim() : '';
+            };
+            
+            const filename = parseField(issueBody, 'Filename');
+            const title = parseField(issueBody, 'Title');
+            const author = parseField(issueBody, 'Author');
+            const date = parseField(issueBody, 'Publication Date');
+            const dateModified = parseField(issueBody, 'Modified Date \\(Optional\\)');
+            const excerpt = parseField(issueBody, 'Excerpt');
+            const tags = parseField(issueBody, 'Tags');
+            const content = parseTextarea(issueBody, 'Blog Post Content');
+            
+            // Validate required fields
+            if (!filename || !title || !author || !date || !excerpt || !tags || !content) {
+              throw new Error('Missing required fields in issue body');
+            }
+            
+            // Return parsed data
+            return {
+              filename,
+              title,
+              author,
+              date,
+              dateModified: dateModified || date,
+              excerpt,
+              tags,
+              content
+            };
+      
+      - name: Create blog post file
+        env:
+          PARSED_DATA: ${{ steps.parse.outputs.result }}
+        run: |
+          # Parse JSON output from previous step
+          FILENAME=$(echo "$PARSED_DATA" | jq -r '.filename')
+          TITLE=$(echo "$PARSED_DATA" | jq -r '.title')
+          AUTHOR=$(echo "$PARSED_DATA" | jq -r '.author')
+          DATE=$(echo "$PARSED_DATA" | jq -r '.date')
+          DATE_MODIFIED=$(echo "$PARSED_DATA" | jq -r '.dateModified')
+          EXCERPT=$(echo "$PARSED_DATA" | jq -r '.excerpt')
+          TAGS=$(echo "$PARSED_DATA" | jq -r '.tags')
+          CONTENT=$(echo "$PARSED_DATA" | jq -r '.content')
+          
+          # Convert comma-separated tags to YAML array format
+          TAGS_ARRAY=$(echo "$TAGS" | sed 's/,/","/g' | sed 's/^/["/' | sed 's/$/"]/')
+          
+          FILEPATH="content/${FILENAME}.md"
+          
+          # Create the markdown file
+          cat > "$FILEPATH" << EOFMARKER
+          ---
+          title: "${TITLE}"
+          author: "${AUTHOR}"
+          date: "${DATE}"
+          dateModified: "${DATE_MODIFIED}"
+          tags: ${TAGS_ARRAY}
+          excerpt: "${EXCERPT}"
+          ---
+
+          ${CONTENT}
+          EOFMARKER
+          
+          echo "filename=${FILENAME}.md" >> $GITHUB_ENV
+          echo "Blog post created: $FILEPATH"
+      
+      - name: Validate blog post
+        run: |
+          npm run test:blog-posts
+      
+      - name: Commit and push
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          git add content/${{ env.filename }}
+          git commit -m "Publish blog post: ${{ steps.parse.outputs.result.title }} (from issue #${{ github.event.issue.number }})"
+          git push
+      
+      - name: Comment on issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ Blog post published successfully!\n\nFile: `content/${{ env.filename }}`\n\nThe blog post is now live on the website.'
+            });
+      
+      - name: Close issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.update({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'closed',
+              state_reason: 'completed'
+            });
+      
+      - name: Handle failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ Failed to publish blog post. Please check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.'
+            });
