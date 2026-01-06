@@ -1,10 +1,10 @@
 ---
 
-title: “HttpOnly, Secure, and SameSite Cookies Explained with Real Auth Example”
-author: “Nihesh Rachakonda”
-date: “2026-01-06”
-tags: [“cookies”, “security”, “authentication”, “web-security”, “xss”, “csrf”]
-excerpt: “Deep dive into cookie security attributes with a practical authentication implementation example”
+title: "HttpOnly, Secure, and SameSite Cookies Explained with Real Auth Example"
+author: "Nihesh Rachakonda"
+date: "2026-01-06"
+tags: ["cookies", "security", "authentication", "web-security", "xss", "csrf"]
+excerpt: "Deep dive into cookie security attributes with a practical authentication implementation example"
 ---
 
 Cookies are fundamental to web authentication, but improper configuration can expose your application to serious security vulnerabilities. This guide explains the three critical cookie security attributes—httpOnly, secure, and sameSite—with a real-world authentication example.
