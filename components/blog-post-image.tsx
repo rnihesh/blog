@@ -19,14 +19,25 @@ export function BlogPostImage({
 }: BlogPostImageProps) {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
 
   // Avoid hydration mismatch by only rendering after mount
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) {
-    // Show skeleton during SSR to avoid showing wrong theme image
+  const imageSrc =
+    resolvedTheme === "dark" && darkImage ? darkImage : lightImage;
+
+  // Reset loading state when image source changes
+  useEffect(() => {
+    if (mounted) {
+      setImageLoading(true);
+    }
+  }, [imageSrc, mounted]);
+
+  if (!mounted || imageLoading) {
+    // Show skeleton during SSR or while image is loading
     return (
       <div className="my-8">
         <Skeleton
@@ -42,9 +53,6 @@ export function BlogPostImage({
     );
   }
 
-  const imageSrc =
-    resolvedTheme === "dark" && darkImage ? darkImage : lightImage;
-
   return (
     <div className="my-8">
       <Image
@@ -56,6 +64,7 @@ export function BlogPostImage({
         className="w-full h-auto"
         style={{ borderRadius: BLOG_IMAGE_BORDER_RADIUS }}
         priority
+        onLoad={() => setImageLoading(false)}
       />
     </div>
   );
