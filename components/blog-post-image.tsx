@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 import { BLOG_IMAGE_BORDER_RADIUS } from "@/lib/constants";
 
 interface BlogPostImageProps {
@@ -14,33 +16,44 @@ export function BlogPostImage({
   darkImage,
   alt,
 }: BlogPostImageProps) {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Avoid hydration mismatch by only rendering after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    // Show skeleton during SSR to avoid showing wrong theme image
+    return (
+      <div className="my-8">
+        <div
+          className="w-full animate-pulse bg-muted"
+          style={{
+            borderRadius: BLOG_IMAGE_BORDER_RADIUS,
+            aspectRatio: "16/9",
+          }}
+        />
+      </div>
+    );
+  }
+
+  const imageSrc =
+    resolvedTheme === "dark" && darkImage ? darkImage : lightImage;
+
   return (
     <div className="my-8">
-      {/* Light image */}
       <Image
-        src={lightImage}
+        src={imageSrc}
         alt={alt}
         width={0}
         height={0}
         sizes="100vw"
-        className={`w-full h-auto ${darkImage ? "dark:hidden" : ""}`}
+        className="w-full h-auto"
         style={{ borderRadius: BLOG_IMAGE_BORDER_RADIUS }}
         priority
       />
-
-      {/* Dark image */}
-      {darkImage && (
-        <Image
-          src={darkImage}
-          alt={alt}
-          width={0}
-          height={0}
-          sizes="100vw"
-          className="hidden w-full h-auto dark:block"
-          style={{ borderRadius: BLOG_IMAGE_BORDER_RADIUS }}
-          priority
-        />
-      )}
     </div>
   );
 }
