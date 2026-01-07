@@ -23,24 +23,18 @@ export function BlogPostImage({ lightImage, darkImage, alt }: BlogPostImageProps
 
   return (
     <div className="my-8 relative">
-      {!loaded && (
-        <div>
-          <Skeleton className="h-[125px] w-[450px] rounded-l bg-secondary" />
-        </div>
-      )}
-      <div className={`transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}>
-        <Image
-          src={src}
-          alt={alt}
-          width={0}
-          height={0}
-          sizes="100vw"
-          className="w-full h-auto"
-          style={{ borderRadius: BLOG_IMAGE_BORDER_RADIUS }}
-          onLoadingComplete={() => setLoaded(true)}
-          priority
-        />
-      </div>
+      <div className="relative aspect-[16/9] w-full my-8">
+  {!loaded && <Skeleton className="absolute inset-0 bg-muted" />}
+  <Image
+    src={src}
+    alt={alt}
+    fill
+    className={`object-cover transition-opacity ${loaded ? "opacity-100" : "opacity-0"}`}
+    style={{ borderRadius: BLOG_IMAGE_BORDER_RADIUS }}
+    onLoadingComplete={() => setLoaded(true)}
+    priority
+  />
+</div>
     </div>
   );
 }
