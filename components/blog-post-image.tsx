@@ -32,8 +32,10 @@ export function BlogPostImage({
           className="w-full animate-pulse bg-muted"
           style={{
             borderRadius: BLOG_IMAGE_BORDER_RADIUS,
-            aspectRatio: "16/9",
+            minHeight: "200px",
           }}
+          role="presentation"
+          aria-hidden="true"
         />
       </div>
     );
