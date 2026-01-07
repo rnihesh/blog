@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { BLOG_IMAGE_BORDER_RADIUS } from "@/lib/constants";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface BlogPostImageProps {
   lightImage: string;
@@ -28,11 +29,11 @@ export function BlogPostImage({
     // Show skeleton during SSR to avoid showing wrong theme image
     return (
       <div className="my-8">
-        <div
-          className="w-full animate-pulse bg-muted"
+        <Skeleton
+          className="w-full"
           style={{
             borderRadius: BLOG_IMAGE_BORDER_RADIUS,
-            minHeight: "200px",
+            minHeight: "300px",
           }}
           role="presentation"
           aria-hidden="true"
