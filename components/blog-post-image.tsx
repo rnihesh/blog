@@ -31,13 +31,7 @@ export function BlogPostImage({
   return (
     <div className="my-8">
       {!imageLoaded && (
-        <Skeleton
-          className="w-full"
-          style={{
-            borderRadius: BLOG_IMAGE_BORDER_RADIUS,
-            minHeight: "300px",
-          }}
-        />
+        <Skeleton className="h-[800px] w-[450px] rounded-l" />
       )}
       <Image
         src={imageSrc}
