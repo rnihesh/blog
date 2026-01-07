@@ -6,6 +6,7 @@ import { getAllPosts, getPostBySlug } from "@/lib/posts";
 import rehypeRaw from "rehype-raw";
 import { CodeBlock } from "@/components/code-block";
 import { BlogPostImage } from "@/components/blog-post-image";
+import { BLOG_IMAGE_DIMENSIONS } from "@/lib/constants";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://blog.niheshr.com";
 
@@ -56,8 +57,8 @@ export async function generateMetadata({ params }: BlogPageProps) {
       images: [
         {
           url: blogImage,
-          width: 800,
-          height: 450,
+          width: BLOG_IMAGE_DIMENSIONS.width,
+          height: BLOG_IMAGE_DIMENSIONS.height,
           alt: blog.title,
         },
       ],

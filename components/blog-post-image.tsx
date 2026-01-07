@@ -3,6 +3,10 @@
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import {
+  BLOG_IMAGE_DIMENSIONS,
+  BLOG_IMAGE_BORDER_RADIUS,
+} from "@/lib/constants";
 
 interface BlogPostImageProps {
   lightImage: string;
@@ -30,10 +34,10 @@ export function BlogPostImage({
         <Image
           src={lightImage}
           alt={alt}
-          width={800}
-          height={450}
+          width={BLOG_IMAGE_DIMENSIONS.width}
+          height={BLOG_IMAGE_DIMENSIONS.height}
           className="w-full h-auto"
-          style={{ borderRadius: "10px" }}
+          style={{ borderRadius: BLOG_IMAGE_BORDER_RADIUS }}
           priority
         />
       </div>
@@ -48,10 +52,10 @@ export function BlogPostImage({
       <Image
         src={imageSrc}
         alt={alt}
-        width={800}
-        height={450}
+        width={BLOG_IMAGE_DIMENSIONS.width}
+        height={BLOG_IMAGE_DIMENSIONS.height}
         className="w-full h-auto"
-        style={{ borderRadius: "10px" }}
+        style={{ borderRadius: BLOG_IMAGE_BORDER_RADIUS }}
         priority
       />
     </div>
