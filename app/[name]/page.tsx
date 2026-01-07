@@ -5,6 +5,7 @@ import remarkGfm from "remark-gfm";
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
 import rehypeRaw from "rehype-raw";
 import { CodeBlock } from "@/components/code-block";
+import { BlogPostImage } from "@/components/blog-post-image";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://blog.niheshr.com";
 
@@ -32,12 +33,16 @@ export async function generateMetadata({ params }: BlogPageProps) {
   }
 
   const blogUrl = `${siteUrl}/${blog.name}`;
+  
+  // Use blog-specific image for SEO, fallback to default
+  const blogImage = blog.image ? `${siteUrl}${blog.image}` : `${siteUrl}/nihesh.png`;
 
   return {
     title: blog.title,
     description: blog.excerpt,
     keywords: blog.tags,
     authors: [{ name: blog.author }],
+    image: blogImage,
     openGraph: {
       type: "article",
       locale: "en_US",
@@ -50,9 +55,9 @@ export async function generateMetadata({ params }: BlogPageProps) {
       tags: blog.tags,
       images: [
         {
-          url: `${siteUrl}/nihesh.png`,
-          width: 512,
-          height: 512,
+          url: blogImage,
+          width: 800,
+          height: 450,
           alt: blog.title,
         },
       ],
@@ -61,7 +66,7 @@ export async function generateMetadata({ params }: BlogPageProps) {
       card: "summary_large_image",
       title: blog.title,
       description: blog.excerpt,
-      images: [`${siteUrl}/nihesh.png`],
+      images: [blogImage],
     },
     alternates: {
       canonical: blogUrl,
@@ -78,6 +83,9 @@ export default async function BlogPage({ params }: BlogPageProps) {
   }
 
   const blogUrl = `${siteUrl}/${blog.name}`;
+  
+  // Use blog-specific image for SEO, fallback to default
+  const blogImage = blog.image ? `${siteUrl}${blog.image}` : `${siteUrl}/nihesh.png`;
 
   // JSON-LD structured data for SEO
   const jsonLd = {
@@ -85,6 +93,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
     "@type": "BlogPosting",
     headline: blog.title,
     description: blog.excerpt,
+    image: blogImage,
     author: {
       "@type": "Person",
       name: blog.author,
@@ -143,6 +152,14 @@ export default async function BlogPage({ params }: BlogPageProps) {
                 ))}
               </div>
             </header>
+
+            {blog.image && (
+              <BlogPostImage
+                lightImage={blog.image}
+                darkImage={blog.imageDark}
+                alt={blog.title}
+              />
+            )}
 
             <div className="markdown-content">
               <ReactMarkdown
