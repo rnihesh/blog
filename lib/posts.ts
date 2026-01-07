@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 
 const contentDirectory = path.join(process.cwd(), "content");
+const imagesDirectory = path.join(process.cwd(), "public", "images");
 
 export interface BlogPost {
   name: string;
@@ -12,6 +13,25 @@ export interface BlogPost {
   tags: string[];
   excerpt: string;
   body: string;
+  image?: string;
+  imageDark?: string;
+}
+
+/**
+ * Find image for a blog post (case-insensitive for .png and .PNG)
+ */
+function findImage(name: string, isDark: boolean = false): string | undefined {
+  const baseName = isDark ? `${name}-dark` : name;
+  const extensions = [".PNG", ".png"];
+  
+  for (const ext of extensions) {
+    const imagePath = path.join(imagesDirectory, `${baseName}${ext}`);
+    if (fs.existsSync(imagePath)) {
+      return `/images/${baseName}${ext}`;
+    }
+  }
+  
+  return undefined;
 }
 
 export function getAllPosts(): BlogPost[] {
@@ -32,6 +52,8 @@ export function getAllPosts(): BlogPost[] {
         tags: data.tags || [],
         excerpt: data.excerpt,
         body: content,
+        image: findImage(name, false),
+        imageDark: findImage(name, true),
       };
     });
 
@@ -53,6 +75,8 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
       tags: data.tags || [],
       excerpt: data.excerpt,
       body: content,
+      image: findImage(slug, false),
+      imageDark: findImage(slug, true),
     };
   } catch (error) {
     return undefined;
