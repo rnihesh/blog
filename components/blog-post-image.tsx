@@ -25,7 +25,7 @@ export function BlogPostImage({ lightImage, darkImage, alt }: BlogPostImageProps
     <div className="my-8 relative">
       {!loaded && (
         <div>
-          <Skeleton className="h-[800px] w-[450px] rounded-l bg-secondary" />
+          <Skeleton className="h-[125px] w-[450px] rounded-l bg-secondary" />
         </div>
       )}
       <div className={`transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}>
