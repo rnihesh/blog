@@ -3,6 +3,7 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import NextTopLoader from "nextjs-toploader";
+import { TOP_LOADER_COLORS } from "@/lib/constants";
 
 export function TopLoader() {
   const { resolvedTheme } = useTheme();
@@ -16,7 +17,8 @@ export function TopLoader() {
     return null;
   }
 
-  const color = resolvedTheme === "dark" ? "#ffffff" : "#000000";
+  const color =
+    resolvedTheme === "dark" ? TOP_LOADER_COLORS.dark : TOP_LOADER_COLORS.light;
 
   return (
     <NextTopLoader
