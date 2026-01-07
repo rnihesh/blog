@@ -36,8 +36,8 @@ export function BlogPostImage({
     }
   }, [imageSrc, mounted]);
 
-  if (!mounted || imageLoading) {
-    // Show skeleton during SSR or while image is loading
+  if (!mounted) {
+    // Show skeleton during SSR to avoid hydration mismatch
     return (
       <div className="my-8">
         <Skeleton
@@ -54,14 +54,27 @@ export function BlogPostImage({
   }
 
   return (
-    <div className="my-8">
+    <div className="my-8 relative">
+      {/* Show skeleton while image is loading */}
+      {imageLoading && (
+        <Skeleton
+          className="w-full absolute inset-0"
+          style={{
+            borderRadius: BLOG_IMAGE_BORDER_RADIUS,
+            minHeight: "300px",
+          }}
+          role="presentation"
+          aria-hidden="true"
+        />
+      )}
+      {/* Image is always rendered but hidden until loaded */}
       <Image
         src={imageSrc}
         alt={alt}
         width={0}
         height={0}
         sizes="100vw"
-        className="w-full h-auto"
+        className={`w-full h-auto ${imageLoading ? "opacity-0" : "opacity-100"} transition-opacity duration-300`}
         style={{ borderRadius: BLOG_IMAGE_BORDER_RADIUS }}
         priority
         onLoad={() => setImageLoading(false)}
