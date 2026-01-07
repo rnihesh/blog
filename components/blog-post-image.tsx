@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
@@ -12,38 +11,36 @@ interface BlogPostImageProps {
   alt: string;
 }
 
-export function BlogPostImage({
-  lightImage,
-  darkImage,
-  alt,
-}: BlogPostImageProps) {
+export function BlogPostImage({ lightImage, darkImage, alt }: BlogPostImageProps) {
   const { resolvedTheme } = useTheme();
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const theme = resolvedTheme ?? "light";
+  const [loaded, setLoaded] = useState(false);
+  const src = theme === "dark" && darkImage ? darkImage : lightImage;
 
-  const imageSrc =
-    resolvedTheme === "dark" && darkImage ? darkImage : lightImage;
-
-  // Reset loaded state when image source changes
   useEffect(() => {
-    setImageLoaded(false);
-  }, [imageSrc]);
+    setLoaded(false);
+  }, [src]);
 
   return (
-    <div className="my-8">
-      {!imageLoaded && (
-        <Skeleton className="h-[800px] w-[450px] rounded-l" />
+    <div className="my-8 relative">
+      {!loaded && (
+        <div>
+          <Skeleton className="h-[800px] w-[450px] rounded-l" />
+        </div>
       )}
-      <Image
-        src={imageSrc}
-        alt={alt}
-        width={0}
-        height={0}
-        sizes="100vw"
-        className={`w-full h-auto ${!imageLoaded ? "hidden" : ""}`}
-        style={{ borderRadius: BLOG_IMAGE_BORDER_RADIUS }}
-        onLoad={() => setImageLoaded(true)}
-        priority
-      />
+      <div className={`transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}>
+        <Image
+          src={src}
+          alt={alt}
+          width={0}
+          height={0}
+          sizes="100vw"
+          className="w-full h-auto"
+          style={{ borderRadius: BLOG_IMAGE_BORDER_RADIUS }}
+          onLoadingComplete={() => setLoaded(true)}
+          priority
+        />
+      </div>
     </div>
   );
 }
