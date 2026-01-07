@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Analytics } from "@/components/analytics";
+import { TopLoader } from "@/components/top-loader";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://blog.niheshr.com";
 
@@ -109,6 +110,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <TopLoader />
           <Analytics />
           <ThemeToggle />
           {children}
