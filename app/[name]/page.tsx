@@ -96,11 +96,11 @@ export default async function BlogPage({ params }: BlogPageProps) {
     "@type": "BlogPosting",
     headline: blog.title,
     description: blog.excerpt,
-    image: blogImage,
+    image: [blogImage],
     author: {
       "@type": "Person",
       name: blog.author,
-      url: "https://niheshr.com",
+      url: "https://niheshr.com/",
     },
     datePublished: `${blog.date}T00:00:00+05:30`,
     dateModified: `${blog.date}T00:00:00+05:30`,
@@ -112,12 +112,8 @@ export default async function BlogPage({ params }: BlogPageProps) {
     keywords: blog.tags.join(", "),
     publisher: {
       "@type": "Person",
-      name: "Nihesh",
-      url: "https://niheshr.com",
-      logo: {
-        "@type": "ImageObject",
-        url: `${siteUrl}/nihesh.png`,
-      },
+      name: "Nihesh Rachakonda",
+      url: "https://niheshr.com/",
     },
   };
 
