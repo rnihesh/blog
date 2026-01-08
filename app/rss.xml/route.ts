@@ -16,7 +16,16 @@ function generateRssItem(post: {
   const pubDate = new Date(post.date).toUTCString();
 
   // Convert markdown to HTML for RSS readers
-  const htmlContent = marked(post.body, { async: false }) as string;
+  const htmlContent = marked(post.body, {
+    async: false,
+    gfm: true,
+    breaks: false,
+  }) as string;
+
+  // Escape any problematic characters that might break XML
+  const sanitizedContent = htmlContent
+    .replace(/&(?!(?:apos|quot|[gl]t|amp);|#)/g, "&amp;")
+    .trim();
 
   return `
     <item>
@@ -24,7 +33,7 @@ function generateRssItem(post: {
       <link>${postUrl}</link>
       <guid isPermaLink="true">${postUrl}</guid>
       <description><![CDATA[${post.excerpt}]]></description>
-      <content:encoded><![CDATA[${htmlContent}]]></content:encoded>
+      <content:encoded><![CDATA[${sanitizedContent}]]></content:encoded>
       <pubDate>${pubDate}</pubDate>
       <author>contact@niheshr.com (${post.author})</author>
       ${post.tags.map((tag) => `<category>${tag}</category>`).join("\n      ")}
