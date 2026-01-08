@@ -1,4 +1,5 @@
 import { getAllPosts } from "@/lib/posts";
+import { marked } from "marked";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://blog.niheshr.com";
 
@@ -14,13 +15,16 @@ function generateRssItem(post: {
   const postUrl = `${siteUrl}/${post.name}`;
   const pubDate = new Date(post.date).toUTCString();
 
+  // Convert markdown to HTML for RSS readers
+  const htmlContent = marked(post.body, { async: false }) as string;
+
   return `
     <item>
       <title><![CDATA[${post.title}]]></title>
       <link>${postUrl}</link>
       <guid isPermaLink="true">${postUrl}</guid>
       <description><![CDATA[${post.excerpt}]]></description>
-      <content:encoded><![CDATA[${post.body}]]></content:encoded>
+      <content:encoded><![CDATA[${htmlContent}]]></content:encoded>
       <pubDate>${pubDate}</pubDate>
       <author>contact@niheshr.com (${post.author})</author>
       ${post.tags.map((tag) => `<category>${tag}</category>`).join("\n      ")}
