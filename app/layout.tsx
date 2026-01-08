@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Analytics } from "@/components/analytics";
 import { TopLoader } from "@/components/top-loader";
 
@@ -112,7 +111,6 @@ export default function RootLayout({
         >
           <TopLoader />
           <Analytics />
-          <ThemeToggle />
           {children}
         </ThemeProvider>
       </body>

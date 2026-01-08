@@ -6,6 +6,7 @@ import { getAllPosts, getPostBySlug } from "@/lib/posts";
 import rehypeRaw from "rehype-raw";
 import { CodeBlock } from "@/components/code-block";
 import { BlogPostImage } from "@/components/blog-post-image";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://blog.niheshr.com";
 
@@ -33,9 +34,11 @@ export async function generateMetadata({ params }: BlogPageProps) {
   }
 
   const blogUrl = `${siteUrl}/${blog.name}`;
-  
+
   // Use blog-specific image for SEO, fallback to default
-  const blogImage = blog.image ? `${siteUrl}${blog.image}` : `${siteUrl}/nihesh.png`;
+  const blogImage = blog.image
+    ? `${siteUrl}${blog.image}`
+    : `${siteUrl}/nihesh.png`;
 
   return {
     title: blog.title,
@@ -81,9 +84,11 @@ export default async function BlogPage({ params }: BlogPageProps) {
   }
 
   const blogUrl = `${siteUrl}/${blog.name}`;
-  
+
   // Use blog-specific image for SEO, fallback to default
-  const blogImage = blog.image ? `${siteUrl}${blog.image}` : `${siteUrl}/nihesh.png`;
+  const blogImage = blog.image
+    ? `${siteUrl}${blog.image}`
+    : `${siteUrl}/nihesh.png`;
 
   // JSON-LD structured data for SEO
   const jsonLd = {
@@ -123,13 +128,16 @@ export default async function BlogPage({ params }: BlogPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="min-h-screen">
-        <div className="container mx-auto px-4 py-10 max-w-3xl ">
-          <Link
-            href="/"
-            className="inline-block text-foreground hover:underline mb-8 font-medium"
-          >
-            ← Back to all posts
-          </Link>
+        <div className="container mx-auto px-4 pt-7 pb-10 max-w-3xl ">
+          <div className="flex items-center justify-between mb-8">
+            <Link
+              href="/"
+              className="inline-block text-foreground hover:underline font-medium"
+            >
+              ← Back to all posts
+            </Link>
+            <ThemeToggle />
+          </div>
 
           <article>
             <header className="mb-8">
@@ -143,7 +151,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
                 {blog.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-xs py-1 rounded bg-muted text-foreground"
+                    className="text-xs py-1 rounded text-foreground"
                   >
                     {tag}
                   </span>

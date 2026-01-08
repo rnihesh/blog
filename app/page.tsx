@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllPosts } from "@/lib/posts";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://blog.niheshr.com";
 
@@ -40,10 +41,15 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="min-h-screen">
-        <div className="container mx-auto px-4 py-12 max-w-3xl">
+        <div className="container mx-auto px-4 pt-7 pb-12 max-w-3xl">
           <header className="mb-16">
-            <h1 className="text-4xl font-bold mb-2">Nihesh's Blog</h1>
-            <p className="text-muted-foreground">
+            <div className="flex items-center justify-between">
+              <h1 className="text-4xl font-bold">Nihesh's Blog</h1>
+              <div className="ml-4">
+                <ThemeToggle />
+              </div>
+            </div>
+            <p className="text-muted-foreground mt-2">
               Welcome to my collection of thoughts and tutorials
             </p>
           </header>
@@ -78,7 +84,7 @@ export default function Home() {
                   {blog.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-xs py-1 rounded bg-muted text-foreground"
+                      className="text-xs py-1 rounded text-foreground"
                     >
                       {tag}
                     </span>
