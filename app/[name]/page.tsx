@@ -141,12 +141,14 @@ export default async function BlogPage({ params }: BlogPageProps) {
 
           <article>
             <header className="mb-8">
-              <h1 className="text-4xl font-bold mb-4">{blog.title}</h1>
-              <div className="flex items-center text-muted-foreground mb-4">
+              <h1 id="post-title" className="text-4xl font-bold mb-4">{blog.title}</h1>
+
+              <address className="not-italic flex items-center text-muted-foreground mb-4">
                 <span>{blog.author}</span>
                 <span className="mx-2">•</span>
                 <time dateTime={blog.date}>{blog.date}</time>
-              </div>
+              </address>
+
               <div className="flex flex-wrap gap-3">
                 {blog.tags.map((tag) => (
                   <span

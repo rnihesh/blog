@@ -58,18 +58,23 @@ export default function Home() {
             {blogs.map((blog) => (
               <article
                 key={blog.name}
+                aria-labelledby={`post-${blog.name}`}
                 className="border-b border-border pb-8 last:border-b-0"
               >
-                <Link href={`/${blog.name}`} className="group">
-                  <h2 className="text-2xl font-bold mb-2 group-hover:underline">
-                    {blog.title}
-                  </h2>
-                </Link>
-                <div className="flex items-center text-sm text-muted-foreground mb-3">
+                <h2
+                  id={`post-${blog.name}`}
+                  className="text-2xl font-bold mb-2"
+                >
+                  <Link href={`/${blog.name}`} className="group">
+                    <span className="group-hover:underline">{blog.title}</span>
+                  </Link>
+                </h2>
+
+                <address className="not-italic flex items-center text-sm text-muted-foreground mb-3">
                   <span>{blog.author}</span>
                   <span className="mx-2">•</span>
-                  <span>{blog.date}</span>
-                </div>
+                  <time dateTime={blog.date}>{blog.date}</time>
+                </address>
                 <div className="flex items-start justify-between gap-4">
                   <p className="text-muted-foreground flex-1">{blog.excerpt}</p>
                   <Link
