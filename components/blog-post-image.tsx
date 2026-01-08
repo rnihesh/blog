@@ -17,8 +17,9 @@ export function BlogPostImage({
   alt,
 }: BlogPostImageProps) {
   const { resolvedTheme } = useTheme();
-  const [loaded, setLoaded] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [lightLoaded, setLightLoaded] = useState(false);
+  const [darkLoaded, setDarkLoaded] = useState(false);
 
   // Wait for client-side hydration to complete before using theme
   useEffect(() => {
@@ -27,26 +28,42 @@ export function BlogPostImage({
 
   // Use light image during SSR and before mounting to prevent hydration mismatch
   const theme = mounted ? (resolvedTheme ?? "light") : "light";
-  const src = theme === "dark" && darkImage ? darkImage : lightImage;
-
-  useEffect(() => {
-    setLoaded(false);
-  }, [src]);
+  const showDark = theme === "dark" && darkImage;
 
   return (
     <div className="my-8 relative">
       <div className="relative aspect-video w-full my-8">
-        {!loaded && <Skeleton className="absolute inset-0 bg-muted" />}
+        {/* Show skeleton until the correct image for current theme loads */}
+        {((theme === "light" && !lightLoaded) ||
+          (theme === "dark" && showDark && !darkLoaded)) && (
+          <Skeleton className="absolute inset-0 bg-muted" />
+        )}
+
+        {/* Light image - always render but hide until loaded and appropriate */}
         <Image
-          src={src}
+          src={lightImage}
           alt={alt}
           fill
           sizes="(min-width: 768px) 768px, 100vw"
-          className={`object-cover transition-opacity ${loaded ? "opacity-100" : "opacity-0"}`}
+          className={`object-cover ${!showDark && lightLoaded ? "block" : "hidden"}`}
           style={{ borderRadius: BLOG_IMAGE_BORDER_RADIUS }}
-          onLoad={() => setLoaded(true)}
+          onLoad={() => setLightLoaded(true)}
           priority
         />
+
+        {/* Dark image - always render but hide until loaded and appropriate */}
+        {darkImage && (
+          <Image
+            src={darkImage}
+            alt={alt}
+            fill
+            sizes="(min-width: 768px) 768px, 100vw"
+            className={`object-cover ${showDark && darkLoaded ? "block" : "hidden"}`}
+            style={{ borderRadius: BLOG_IMAGE_BORDER_RADIUS }}
+            onLoad={() => setDarkLoaded(true)}
+            priority
+          />
+        )}
       </div>
     </div>
   );
