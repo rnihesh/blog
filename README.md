@@ -1,6 +1,6 @@
 # Blog Application
 
-A modern blog application built with Next.js 16, React 19, TypeScript, and Tailwind CSS. Features dynamic routing, markdown rendering, and a clean responsive UI with dark/light theme support.
+A Next.js 16 powered blogging platform with markdown support, smart search, and adaptive theming — built for seamless writing, fast navigation, and an exceptional reading experience.
 
 ## Features
 
