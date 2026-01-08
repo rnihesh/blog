@@ -121,6 +121,7 @@ npm run test:blog-posts
 ```
 
 This validation script checks that each markdown file in `content/`:
+
 - Starts with YAML frontmatter delimited by `---`
 - Contains all required fields: `title`, `author`, `date`, `excerpt`, `tags`
 - Has proper date format (YYYY-MM-DD)

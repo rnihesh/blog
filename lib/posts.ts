@@ -23,14 +23,14 @@ export interface BlogPost {
 function findImage(name: string, isDark: boolean = false): string | undefined {
   const baseName = isDark ? `${name}-dark` : name;
   const extensions = [".PNG", ".png"];
-  
+
   for (const ext of extensions) {
     const imagePath = path.join(imagesDirectory, `${baseName}${ext}`);
     if (fs.existsSync(imagePath)) {
       return `/images/${baseName}${ext}`;
     }
   }
-  
+
   return undefined;
 }
 

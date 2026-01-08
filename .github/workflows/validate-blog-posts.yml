@@ -4,45 +4,45 @@ on:
   push:
     branches:
       - main
-      - '**'
+      - "**"
     paths:
-      - 'content/*.md'
-      - 'scripts/validate-blog-posts.js'
-      - '.github/workflows/validate-blog-posts.yml'
+      - "content/*.md"
+      - "scripts/validate-blog-posts.js"
+      - ".github/workflows/validate-blog-posts.yml"
   pull_request:
     branches:
       - main
     paths:
-      - 'content/*.md'
-      - 'scripts/validate-blog-posts.js'
-      - '.github/workflows/validate-blog-posts.yml'
+      - "content/*.md"
+      - "scripts/validate-blog-posts.js"
+      - ".github/workflows/validate-blog-posts.yml"
 
 jobs:
   validate:
     name: Validate Blog Post Structure
     runs-on: ubuntu-latest
-    
+
     permissions:
       contents: read
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-      
+          node-version: "18"
+
       - name: Run validation script
         run: npm run test:blog-posts
-      
+
       - name: Report success
         if: success()
         run: |
           echo "[+] Blog post validation passed!"
           echo "All markdown files in content/ have correct structure."
-      
+
       - name: Report failure
         if: failure()
         run: |

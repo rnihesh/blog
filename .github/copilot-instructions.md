@@ -125,6 +125,7 @@ blog/
 ## Testing
 
 Currently, there is no test infrastructure in this repository. When adding tests:
+
 - Consider using Jest and React Testing Library
 - Test critical user flows and components
 - Maintain existing functionality
