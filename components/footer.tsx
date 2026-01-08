@@ -29,7 +29,7 @@ export function Footer() {
             <Link
               href="https://niheshr.com"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               Portfolio
@@ -38,7 +38,7 @@ export function Footer() {
             <Link
               href="https://github.com/rnihesh"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               GitHub
@@ -54,7 +54,7 @@ export function Footer() {
               <Link
                 href="https://www.apache.org/licenses/LICENSE-2.0"
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener"
                 className="hover:text-foreground transition-colors underline"
               >
                 Apache 2.0
