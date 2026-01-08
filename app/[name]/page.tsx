@@ -7,6 +7,7 @@ import rehypeRaw from "rehype-raw";
 import { CodeBlock } from "@/components/code-block";
 import { BlogPostImage } from "@/components/blog-post-image";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Footer } from "@/components/footer";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://blog.niheshr.com";
 
@@ -211,6 +212,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

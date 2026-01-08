@@ -6,6 +6,7 @@ import { useEffect, useCallback } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { SearchCommand } from "@/components/search-command";
 import { Pagination } from "@/components/pagination";
+import { Footer } from "@/components/footer";
 
 const POSTS_PER_PAGE = 4;
 const SCROLL_STORAGE_KEY = "home-scroll-position";
@@ -148,6 +149,7 @@ export function HomeClient({ blogs }: HomeClientProps) {
           onPageChange={handlePageChange}
         />
       </div>
+      <Footer />
     </div>
   );
 }
