@@ -74,6 +74,11 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: siteUrl,
+    types: {
+      "application/rss+xml": [
+        { url: "/rss.xml", title: "Nihesh's Blog RSS Feed" },
+      ],
+    },
   },
 };
 

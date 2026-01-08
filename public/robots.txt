@@ -4,6 +4,7 @@ Allow: /
 
 # Sitemap location
 Sitemap: https://blog.niheshr.com/sitemap.xml
+Sitemap: https://blog.niheshr.com/rss.xml
 
 # Disallow admin or private paths (if any)
 # Disallow: /admin/
