@@ -139,6 +139,16 @@ sudo ufw allow 5349/udp
 sudo ufw allow 49152:65535/udp
 ```
 
+### Cloud Provider Security Rules
+
+If deploying on a cloud provider (AWS, Azure, etc.), configure your security groups or network security groups to allow inbound traffic on the following ports (adjust source IPs as needed for security):
+
+- **TCP and UDP:** 3478
+- **TCP and UDP:** 5349
+- **UDP:** 49152-65535
+
+Outbound rules should allow all traffic, which is the default in most cloud providers and sufficient for TURN server operation.
+
 ## Step 6: Start and Enable Coturn Service
 
 ```bash
