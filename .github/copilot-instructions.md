@@ -114,6 +114,10 @@ blog/
   import { utilFunction } from "@/lib/utils";
   ```
 
+### Symbols & Emojis
+
+- **Avoid using emojis** in code, documentation, UI text, commit messages, or automation scripts. Use clear Unicode symbols when needed (for example, use `✔` and `✖` instead of ASCII markers like `[+]` or `[x]` or emoji characters).
+
 ## SEO and Metadata
 
 - Use Next.js Metadata API for all pages
