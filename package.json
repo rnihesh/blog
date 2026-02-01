@@ -1,7 +1,7 @@
 {
-  "name": "blog",
+  "name": "niheshs-blog",
   "version": "1.0.0",
-  "description": "",
+  "description": "My personal blog.",
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
@@ -12,8 +12,8 @@
     "test:blog-posts": "node scripts/validate-blog-posts.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Nihesh Rachakonda",
+  "license": "Apache-2.0",
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-slot": "^1.2.4",
