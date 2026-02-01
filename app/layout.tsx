@@ -96,6 +96,12 @@ export default function RootLayout({
         />
         <link rel="icon" type="image/png" href="/nihesh.png" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Nihesh's Blog RSS Feed"
+          href="/rss.xml"
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"

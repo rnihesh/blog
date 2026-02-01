@@ -97,7 +97,7 @@ export function SearchCommand({ posts }: SearchCommandProps) {
             }}
             onFocus={() => setInlineOpen(true)}
             placeholder="Search posts..."
-            className="pl-10 pr-20 h-12"
+            className="pl-10 pr-20 h-12 rounded-2xl"
           />
           <kbd className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-xs font-medium opacity-100 sm:flex">
             <span className="text-xs">⌘</span>K
