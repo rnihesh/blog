@@ -135,6 +135,11 @@ export default async function BlogPage({ params }: BlogPageProps) {
       "@type": "WebPage",
       "@id": blogUrl,
     },
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Nihesh's Blog",
+      url: siteUrl,
+    },
     keywords: blog.tags.join(", "),
     publisher: {
       "@type": "Person",

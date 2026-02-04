@@ -90,6 +90,18 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Nihesh's Blog",
+              alternateName: ["Rachakonda Nihesh"],
+              url: siteUrl,
+            }),
+          }}
+        />
         <meta
           property="og:logo"
           content="https://blog.niheshr.com/nihesh.png"
