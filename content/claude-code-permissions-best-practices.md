@@ -97,6 +97,8 @@ Notes:
 
 For a full-stack team shipping a storefront, admin panel, and backend APIs, set permissions by workflow phase.
 
+> **Tech stack note:** Next.js (frontend), Node.js/Express (API), PostgreSQL (database), Redis (cache), Terraform (infrastructure).
+
 ### Recommended baseline
 
 - Read and write access only to the app repository
@@ -140,6 +142,8 @@ Most feature work (React UI updates, API handlers, validation fixes, unit tests)
 ## Use Case 2: Data Analytics in Healthcare Operations
 
 In analytics-heavy healthcare workflows, data sensitivity is high and accidental exposure is costly. Permissions should reflect that.
+
+> **Tech stack note:** Python (Pandas), dbt (transformations), BigQuery/Snowflake (warehouse), Looker/Metabase (dashboards), Airflow (orchestration).
 
 ### Recommended baseline
 
@@ -186,6 +190,8 @@ Analysts and engineers still get fast iteration on transformations, chart logic,
 ## Use Case 3: Data Engineering for Fintech Risk Pipelines
 
 Risk scoring pipelines often combine strict audit requirements with frequent model or rule updates.
+
+> **Tech stack note:** Python (feature engineering), Spark (batch pipelines), Kafka (streaming), S3 (data lake), AWS KMS (key management), Terraform (IaC).
 
 ### Recommended baseline
 
