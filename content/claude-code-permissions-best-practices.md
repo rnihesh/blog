@@ -55,6 +55,44 @@ Base project file:
 }
 ```
 
+## Advanced Rules for Web, Explore, Bash `ls`, and MCP Tools
+
+If your team uses web research, subagents, and MCP servers, add explicit rules for them instead of falling back to broad `Bash` permissions.
+
+```json
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(ls *)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "WebFetch(domain:code.claude.com)",
+      "Task(Explore)",
+      "mcp__puppeteer__*",
+      "mcp__chromedevtools__*"
+    ],
+    "ask": [
+      "WebFetch",
+      "Task(Plan)"
+    ],
+    "deny": [
+      "Bash(curl *)",
+      "Read(./.env)",
+      "Read(./secrets/**)"
+    ]
+  }
+}
+```
+
+Notes:
+
+- `Bash(ls *)` allows listing paths while avoiding a blanket `Bash` allow.
+- `WebFetch(domain:...)` allows targeted web fetches; `WebFetch` in `ask` prompts for other domains.
+- `Task(Explore)` explicitly allows the Explore subagent for codebase discovery.
+- MCP permissions use server/tool patterns like:
+  - `mcp__puppeteer__*`
+  - `mcp__chromedevtools__*` (example for a Chrome DevTools-style server name)
+
 ## Use Case 1: Full-Stack E-commerce Platform
 
 For a full-stack team shipping a storefront, admin panel, and backend APIs, set permissions by workflow phase.
