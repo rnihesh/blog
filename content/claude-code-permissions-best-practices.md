@@ -25,6 +25,36 @@ A useful model is to treat permissions like environment tiers:
 2. **Develop mode**: repo write access, limited shell/network
 3. **Elevated mode**: temporary access for releases, infrastructure, or data operations
 
+## Claude Code JSON Files You Can Use
+
+Claude Code accepts these JSON configuration files for permissions:
+
+- `.claude/settings.json` (shared project settings)
+- `.claude/settings.local.json` (local-only overrides)
+- `managed-settings.json` (organization-managed policies)
+
+Base project file:
+
+```json
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(npm run test *)"
+    ],
+    "ask": [
+      "Bash(git push *)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)"
+    ]
+  }
+}
+```
+
 ## Use Case 1: Full-Stack E-commerce Platform
 
 For a full-stack team shipping a storefront, admin panel, and backend APIs, set permissions by workflow phase.
@@ -38,6 +68,32 @@ For a full-stack team shipping a storefront, admin panel, and backend APIs, set 
   - Database migration commands
   - Deployment scripts
   - Editing infrastructure files outside the service scope
+
+### Example `.claude/settings.json` for this use case
+
+```json
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(npm run test *)",
+      "Bash(npm run build)"
+    ],
+    "ask": [
+      "Bash(npm run db:migrate *)",
+      "Bash(git push *)",
+      "Bash(terraform *)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)"
+    ]
+  }
+}
+```
 
 ### Why this works
 
@@ -57,6 +113,34 @@ In analytics-heavy healthcare workflows, data sensitivity is high and accidental
   - Exporting query results
   - Modifying ETL jobs tied to compliance reporting
 
+### Example `.claude/settings.json` for this use case
+
+```json
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "Bash(python -m pytest *)",
+      "Bash(dbt test *)",
+      "Read(./models/**)",
+      "Read(./dashboards/**)"
+    ],
+    "ask": [
+      "Bash(dbt run --target prod *)",
+      "Bash(bq query *)",
+      "Bash(snowflake *)"
+    ],
+    "deny": [
+      "Read(./data/raw/**)",
+      "Read(./exports/**)",
+      "Read(./.env)",
+      "Read(./secrets/**)"
+    ]
+  }
+}
+```
+
 ### Why this works
 
 Analysts and engineers still get fast iteration on transformations, chart logic, and quality checks without opening broad access to regulated data.
@@ -74,6 +158,32 @@ Risk scoring pipelines often combine strict audit requirements with frequent mod
   - Backfills against production partitions
   - Changes to retention or encryption settings
   - Secrets management and key rotation scripts
+
+### Example `.claude/settings.json` for this use case
+
+```json
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "Bash(python -m pytest *)",
+      "Bash(make test *)",
+      "Read(./pipelines/**)"
+    ],
+    "ask": [
+      "Bash(python scripts/backfill.py *)",
+      "Bash(aws kms *)",
+      "Bash(terraform apply *)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./keys/**)",
+      "Read(./secrets/**)"
+    ]
+  }
+}
+```
 
 ### Why this works
 
