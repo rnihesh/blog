@@ -3,7 +3,7 @@ title: "Axios npm Hack: What Happened and How to Fix It"
 author: "Nihesh Rachakonda"
 date: "2026-04-01"
 tags: ["axios", "npm", "supply-chain-security", "javascript", "incident-response", "hack"]
-excerpt: "A complete breakdown of the axios npm compromise: timeline, technical attack chain, impact, detection, remediation, and long-term defenses."
+excerpt: "Axios npm package compromise explained in detail: what happened, who was affected, full attack flow, IOCs, incident response, and prevention steps for teams."
 ---
 
 On March 31, 2026, the npm package **axios** was compromised in a high-impact supply chain attack.
