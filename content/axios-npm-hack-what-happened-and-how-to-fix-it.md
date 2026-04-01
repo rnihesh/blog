@@ -233,11 +233,14 @@ If compromised versions were installed, treat the host as potentially compromise
 
 Rotate:
 
+- account passwords (GitHub, npm, cloud consoles, CI admin users, and email)
 - npm tokens
 - cloud/API keys
 - SSH keys
-- DB credentials
+- DB credentials/passwords
 - CI secrets and signing material
+
+Also revoke active sessions where possible and regenerate recovery codes for critical accounts.
 
 ### Investigation and recovery
 
