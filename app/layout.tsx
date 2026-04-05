@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@/components/analytics";
 import { TopLoader } from "@/components/top-loader";
+import { ScrollToTopButton } from "@/components/scroll-to-top";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://blog.niheshr.com";
 
@@ -135,6 +136,7 @@ export default function RootLayout({
           <TopLoader />
           <Analytics />
           {children}
+          <ScrollToTopButton />
         </ThemeProvider>
       </body>
     </html>
