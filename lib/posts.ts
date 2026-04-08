@@ -29,16 +29,20 @@ function calculateReadingTime(content: string): number {
 }
 
 /**
- * Find image for a blog post (case-insensitive for .png and .PNG)
+ * Find image for a blog post (case-insensitive for PNG/JPG/JPEG)
  */
 function findImage(name: string, isDark: boolean = false): string | undefined {
   const baseName = isDark ? `${name}-dark` : name;
-  const extensions = [".PNG", ".png"];
+  const extensions = [".png", ".jpg", ".jpeg"];
+  const imageFiles = fs.readdirSync(imagesDirectory);
 
   for (const ext of extensions) {
-    const imagePath = path.join(imagesDirectory, `${baseName}${ext}`);
-    if (fs.existsSync(imagePath)) {
-      return `/images/${baseName}${ext}`;
+    const expectedFileName = `${baseName}${ext}`.toLowerCase();
+    const matchedFile = imageFiles.find(
+      (fileName) => fileName.toLowerCase() === expectedFileName,
+    );
+    if (matchedFile) {
+      return `/images/${matchedFile}`;
     }
   }
 
