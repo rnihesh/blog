@@ -1,6 +1,6 @@
 # Blog Application
 
-A Next.js 16 powered blogging platform with markdown support, smart search, and adaptive theming — built for seamless writing, fast navigation, and an exceptional reading experience.
+A Next.js 16 powered blogging platform with markdown support, smart search, and adaptive theming, built for seamless writing, fast navigation, and an exceptional reading experience.
 
 ## Features
 

@@ -1,9 +1,26 @@
 import type { Metadata } from "next";
+import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { ViewTransitions } from "next-view-transitions";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@/components/analytics";
 import { TopLoader } from "@/components/top-loader";
 import { ScrollToTopButton } from "@/components/scroll-to-top";
+
+// Self-hosted at build time by next/font: no request to fonts.googleapis.com, no
+// render-blocking stylesheet, and an auto-generated size-adjust fallback so swapping
+// in the real face does not shift layout. Change a family here, not in a URL.
+const fontSans = Space_Grotesk({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sans",
+});
+
+const fontMono = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-mono",
+});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://blog.niheshr.com";
 
@@ -89,56 +106,52 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: "Nihesh's Blog",
-              alternateName: ["Rachakonda Nihesh"],
-              url: siteUrl,
-            }),
-          }}
-        />
-        <meta
-          property="og:logo"
-          content="https://blog.niheshr.com/nihesh.png"
-        />
-        <link rel="icon" type="image/png" href="/nihesh.png" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link
-          rel="alternate"
-          type="application/rss+xml"
-          title="Nihesh's Blog RSS Feed"
-          href="/rss.xml"
-        />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin=""
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Figtree:ital,wght@0,300..900;1,300..900&family=Fira+Code:wght@300..700&family=Funnel+Display:wght@300..800&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Red+Rose:wght@300..700&family=Space+Grotesk:wght@300..700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <TopLoader />
-          <Analytics />
-          {children}
-          <ScrollToTopButton />
-        </ThemeProvider>
-      </body>
-    </html>
+    <ViewTransitions>
+      <html
+        lang="en"
+        suppressHydrationWarning
+        className={`${fontSans.variable} ${fontMono.variable}`}
+      >
+        <head>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                name: "Nihesh's Blog",
+                alternateName: ["Rachakonda Nihesh"],
+                url: siteUrl,
+              }),
+            }}
+          />
+          <meta
+            property="og:logo"
+            content="https://blog.niheshr.com/nihesh.png"
+          />
+          <link rel="icon" type="image/png" href="/nihesh.png" />
+          <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="Nihesh's Blog RSS Feed"
+            href="/rss.xml"
+          />
+        </head>
+        <body>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <TopLoader />
+            <Analytics />
+            {children}
+            <ScrollToTopButton />
+          </ThemeProvider>
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }

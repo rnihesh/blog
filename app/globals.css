@@ -21,14 +21,14 @@
     --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
+    --border: oklch(0.922 0 0);
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 0 0% 3.9%;
+    --background: oklch(0.145 0 0);
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
@@ -44,7 +44,7 @@
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
+    --border: oklch(0.269 0 0);
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
     }
@@ -93,7 +93,7 @@
 
 :root {
   --radius: 0.625rem;
-  --background: 0 0% 100%;
+  --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --scrollbar-thumb: rgba(0, 0, 0, 0.25);
@@ -110,7 +110,7 @@
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: 0 0% 89.8%;
+  --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
@@ -129,7 +129,7 @@
 }
 
 .dark {
-  --background: 0 0% 3.9%;
+  --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
@@ -146,7 +146,7 @@
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: 0 0% 14.9%;
+  --border: oklch(0.269 0 0);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.488 0.243 264.376);
@@ -199,13 +199,13 @@
 }
 
 * {
-  border-color: hsl(var(--border));
+  border-color: var(--border);
 }
 
 body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-  font-family: "Space Grotesk", system-ui, sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
 }
 
 /* Text selection styling - only on actual content */
@@ -288,14 +288,20 @@ body {
 
 .markdown-content table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
   margin: 1.5rem 0;
   font-size: 0.95rem;
 }
 
 .markdown-content th,
 .markdown-content td {
-  border: 1px solid var(--border);
+  border: 0;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
   padding: 0.625rem 0.75rem;
   text-align: left;
   vertical-align: top;
@@ -304,6 +310,25 @@ body {
 .markdown-content th {
   background-color: var(--muted);
   font-weight: 600;
+}
+
+/* Rounded tables: the outer border lives on the table, cells draw only inner lines. */
+.markdown-content th:last-child,
+.markdown-content td:last-child {
+  border-right: 0;
+}
+
+.markdown-content tr:last-child > td {
+  border-bottom: 0;
+}
+
+/* Wide tables scroll sideways on small screens instead of overflowing the page. */
+@media (max-width: 640px) {
+  .markdown-content table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
 }
 
 .markdown-content tr:nth-child(even) {
@@ -317,7 +342,7 @@ body {
   border: 1px solid var(--border);
   border-radius: 0.25rem;
   font-size: 0.875rem;
-  font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+  font-family: var(--font-mono), ui-monospace, monospace;
 }
 
 .markdown-content pre {
@@ -336,8 +361,10 @@ body {
 }
 
 .markdown-content blockquote {
-  border-left: 4px solid var(--border);
-  padding-left: 1rem;
+  /* --border is a hairline token tuned for tables; as a quote accent it reads as
+     invisible, so use the muted foreground for real contrast in both themes. */
+  border-left: 3px solid var(--muted-foreground);
+  padding: 0.25rem 0 0.25rem 1.25rem;
   font-style: italic;
   margin: 1rem 0;
   color: var(--muted-foreground);
@@ -359,4 +386,149 @@ body {
 
 .markdown-content em {
   font-style: italic;
+}
+
+/* Media in post content: screenshots, GIFs, diagrams and video. The radius matches
+   the cover image (--radius, BLOG_IMAGE_BORDER_RADIUS); the hairline border keeps
+   light-on-light and dark-on-dark images from bleeding into the page. */
+.markdown-content img,
+.markdown-content video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.75rem auto 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--background);
+}
+
+/* Theme-aware inline images (components/markdown-image.tsx): `shot.webp` in
+   light mode, `shot-dark.webp` in dark mode. */
+.markdown-content img.theme-dark-only,
+.dark .markdown-content img.theme-light-only {
+  display: none;
+}
+
+.dark .markdown-content img.theme-dark-only {
+  display: block;
+}
+
+/* An italic-only paragraph right after an image reads as its caption. */
+.markdown-content p:has(> img) + p:has(> em:only-child) {
+  margin-top: 0;
+  margin-bottom: 1.75rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--muted-foreground);
+}
+
+.markdown-content p:has(> img) + p:has(> em:only-child) code {
+  font-size: 0.8125rem;
+}
+
+/* A small horizontal bar chart written as HTML in a post (<figure class="bar-chart">),
+   so it follows the theme and stays readable on narrow screens. */
+.markdown-content .bar-chart {
+  margin: 1.75rem 0;
+  padding: 1.125rem 1.25rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.markdown-content .bar-chart figcaption {
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+.markdown-content .bar-chart figcaption strong {
+  color: var(--foreground);
+}
+
+.markdown-content .bar-row {
+  display: grid;
+  grid-template-columns: minmax(7.5rem, 11rem) minmax(0, 1fr) 3.5rem;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.625rem 0;
+  font-size: 0.875rem;
+}
+
+.markdown-content .bar-track {
+  height: 0.875rem;
+  border-radius: 4px;
+  background-color: color-mix(in oklab, var(--muted) 80%, transparent);
+  overflow: hidden;
+}
+
+.markdown-content .bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background-color: color-mix(
+    in oklab,
+    var(--muted-foreground) 55%,
+    transparent
+  );
+}
+
+.markdown-content .bar-row.is-primary .bar-fill {
+  background-color: var(--foreground);
+}
+
+.markdown-content .bar-value {
+  text-align: right;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.markdown-content .bar-row.is-primary .bar-label,
+.markdown-content .bar-row.is-primary .bar-value {
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .markdown-content .bar-row {
+    grid-template-columns: minmax(0, 1fr) 3.25rem;
+    row-gap: 0.25rem;
+  }
+
+  .markdown-content .bar-label {
+    grid-column: 1 / -1;
+  }
+}
+
+/* A short summary box near the top of a post: <aside class="callout">. */
+.markdown-content .callout {
+  margin: 1.5rem 0 2rem;
+  padding: 1rem 1.25rem 0.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: color-mix(in oklab, var(--muted) 55%, transparent);
+}
+
+.markdown-content .callout > p:first-child {
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* View Transitions API */
+@media (prefers-reduced-motion: no-preference) {
+  /* Apply view-transition-name from CSS variable */
+  [style*="--vt-name"] {
+    view-transition-name: var(--vt-name);
+    contain: paint;
+  }
+
+  /* Smooth morphing animation for matching elements */
+  ::view-transition-group(*) {
+    animation-duration: 0.35s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
 }

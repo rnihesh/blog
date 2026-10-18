@@ -1,67 +1,106 @@
 "use client";
+
 import Image from "next/image";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { BLOG_IMAGE_BORDER_RADIUS } from "@/lib/constants";
 import { Skeleton } from "@/components/ui/skeleton";
+
+const loadedImageSources = new Set<string>();
 
 interface BlogPostImageProps {
   lightImage: string;
   darkImage?: string;
   alt: string;
+  className?: string;
+  transitionName?: string;
+  priority?: boolean;
+  sizes?: string;
 }
 
 export function BlogPostImage({
   lightImage,
   darkImage,
   alt,
+  className = "my-8",
+  transitionName,
+  priority = true,
+  sizes = "(min-width: 768px) 768px, 100vw",
 }: BlogPostImageProps) {
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [lightLoaded, setLightLoaded] = useState(false);
-  const [darkLoaded, setDarkLoaded] = useState(false);
+  const [lightLoaded, setLightLoaded] = useState(() =>
+    loadedImageSources.has(lightImage),
+  );
+  const [darkLoaded, setDarkLoaded] = useState(() =>
+    darkImage ? loadedImageSources.has(darkImage) : false,
+  );
 
-  // Wait for client-side hydration to complete before using theme
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    setLightLoaded(loadedImageSources.has(lightImage));
+  }, [lightImage]);
 
-  // Use light image during SSR and before mounting to prevent hydration mismatch
-  const theme = mounted ? (resolvedTheme ?? "light") : "light";
-  const showDark = theme === "dark" && darkImage;
+  useEffect(() => {
+    setDarkLoaded(Boolean(darkImage && loadedImageSources.has(darkImage)));
+  }, [darkImage]);
+
+  const effectiveTheme =
+    resolvedTheme ??
+    (typeof document !== "undefined" &&
+    document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light");
+
+  const wantsDark = effectiveTheme === "dark" && Boolean(darkImage);
+  const showDark = wantsDark && darkLoaded;
+  const showLight = !showDark;
+  const isVisibleImageLoaded = showLight ? lightLoaded : darkLoaded;
 
   return (
-    <div className="my-8 relative">
-      <div className="relative aspect-video w-full my-8">
-        {/* Show skeleton until the correct image for current theme loads */}
-        {((theme === "light" && !lightLoaded) ||
-          (theme === "dark" && showDark && !darkLoaded)) && (
+    <div
+      className={className}
+      style={
+        transitionName
+          ? ({ "--vt-name": transitionName } as CSSProperties)
+          : undefined
+      }
+    >
+      <div
+        className="relative aspect-video w-full overflow-hidden"
+        style={{ borderRadius: BLOG_IMAGE_BORDER_RADIUS }}
+      >
+        {!isVisibleImageLoaded && (
           <Skeleton className="absolute inset-0 bg-muted" />
         )}
 
-        {/* Light image - always render but hide until loaded and appropriate */}
         <Image
           src={lightImage}
           alt={alt}
           fill
-          sizes="(min-width: 768px) 768px, 100vw"
-          className={`object-cover ${!showDark && lightLoaded ? "block" : "hidden"}`}
-          style={{ borderRadius: BLOG_IMAGE_BORDER_RADIUS }}
-          onLoad={() => setLightLoaded(true)}
-          priority
+          sizes={sizes}
+          className={`object-cover transition-opacity duration-200 ${
+            showLight && lightLoaded ? "opacity-100" : "opacity-0"
+          }`}
+          onLoad={() => {
+            loadedImageSources.add(lightImage);
+            setLightLoaded(true);
+          }}
+          priority={priority}
         />
 
-        {/* Dark image - always render but hide until loaded and appropriate */}
         {darkImage && (
           <Image
             src={darkImage}
             alt={alt}
             fill
-            sizes="(min-width: 768px) 768px, 100vw"
-            className={`object-cover ${showDark && darkLoaded ? "block" : "hidden"}`}
-            style={{ borderRadius: BLOG_IMAGE_BORDER_RADIUS }}
-            onLoad={() => setDarkLoaded(true)}
-            priority
+            sizes={sizes}
+            className={`object-cover transition-opacity duration-200 ${
+              showDark ? "opacity-100" : "opacity-0"
+            }`}
+            onLoad={() => {
+              loadedImageSources.add(darkImage);
+              setDarkLoaded(true);
+            }}
+            priority={priority}
           />
         )}
       </div>

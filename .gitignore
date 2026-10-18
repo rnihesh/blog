@@ -34,3 +34,14 @@ next-env.d.ts
 
 .env
 .env*
+
+# local .claude
+.claude
+
+# local agent tooling (kept out of the repo, same as .claude)
+scripts/hooks/
+scripts/check-prose.js
+scripts/blog-writer-agent.md
+
+# temp font preview
+font-preview.html

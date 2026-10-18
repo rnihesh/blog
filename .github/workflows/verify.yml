@@ -1,0 +1,26 @@
+name: Verify
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    name: Typecheck, lint, validate, build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - run: npm ci
+
+      # Same command a developer and an agent run locally. One definition of "green".
+      - run: npm run verify

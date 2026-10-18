@@ -7,9 +7,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "format": "prettier --write .",
-    "test:blog-posts": "node scripts/validate-blog-posts.js"
+    "test:blog-posts": "node scripts/validate-blog-posts.js",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit",
+    "format:check": "prettier --check .",
+    "verify": "npm run typecheck && npm run lint && npm run test:blog-posts && npm run build"
   },
   "keywords": [],
   "author": "Nihesh Rachakonda",
@@ -23,14 +27,13 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "gray-matter": "^4.0.3",
-    "lucide-react": "^0.562.0",
-    "marked": "^17.0.1",
-    "next": "^16.1.1",
+    "next": "^16.4.2",
     "next-themes": "^0.4.6",
+    "next-view-transitions": "^0.3.5",
     "nextjs-toploader": "^3.9.17",
     "prettier": "^3.7.4",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "react-markdown": "^10.1.0",
     "react-syntax-highlighter": "^16.1.0",
     "rehype-raw": "^7.0.0",
@@ -40,11 +43,15 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
-    "@types/node": "^25.0.3",
+    "@types/node": "^26.2.0",
     "@types/react": "^19.2.7",
     "autoprefixer": "^10.4.23",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.4.2",
+    "lucide-react": "^1.31.0",
+    "marked": "^18.0.9",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   }
 }

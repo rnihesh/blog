@@ -1,4 +1,4 @@
-import Link from "next/link";
+import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -11,6 +11,7 @@ import {
 import rehypeRaw from "rehype-raw";
 import { CodeBlock } from "@/components/code-block";
 import { BlogPostImage } from "@/components/blog-post-image";
+import { MarkdownImage } from "@/components/markdown-image";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Footer } from "@/components/footer";
 import {
@@ -22,6 +23,14 @@ import { RelatedPosts } from "@/components/related-posts";
 import { ReadingProgress } from "@/components/reading-progress";
 import { ShareButtons } from "@/components/share-buttons";
 import { PostNavigation } from "@/components/post-navigation";
+import { ViewTransitionLink } from "@/components/view-transition-link";
+import {
+  getPostAuthorTransitionName,
+  getPostDateTransitionName,
+  getPostImageTransitionName,
+  getPostTagTransitionName,
+  getPostTitleTransitionName,
+} from "@/lib/view-transition-names";
 
 function slugify(text: string): string {
   return text
@@ -162,25 +171,56 @@ export default async function BlogPage({ params }: BlogPageProps) {
       <div className="min-h-screen">
         <div className="mx-auto px-4 pt-7 pb-10 max-w-3xl">
           <div className="flex items-center justify-between mb-8">
-            <Link
+            <ViewTransitionLink
               href="/"
               className="inline-block text-foreground hover:underline font-medium"
             >
               ← Back to all posts
-            </Link>
+            </ViewTransitionLink>
             <ThemeToggle />
           </div>
 
           <article>
             <header className="mb-8">
-              <h1 id="post-title" className="text-4xl font-bold mb-4">
+              <h1
+                id="post-title"
+                className="text-4xl font-bold mb-4"
+                style={
+                  {
+                    "--vt-name": getPostTitleTransitionName(
+                      resolvedParams.name,
+                    ),
+                  } as React.CSSProperties
+                }
+              >
                 {blog.title}
               </h1>
 
               <address className="not-italic flex items-center text-muted-foreground mb-4">
-                <span>{blog.author}</span>
+                <span
+                  style={
+                    {
+                      "--vt-name": getPostAuthorTransitionName(
+                        resolvedParams.name,
+                      ),
+                    } as React.CSSProperties
+                  }
+                >
+                  {blog.author}
+                </span>
                 <span className="mx-2">•</span>
-                <time dateTime={blog.date}>{blog.date}</time>
+                <time
+                  dateTime={blog.date}
+                  style={
+                    {
+                      "--vt-name": getPostDateTransitionName(
+                        resolvedParams.name,
+                      ),
+                    } as React.CSSProperties
+                  }
+                >
+                  {blog.date}
+                </time>
                 <span className="mx-2">•</span>
                 <span>{blog.readingTime} min read</span>
               </address>
@@ -191,6 +231,14 @@ export default async function BlogPage({ params }: BlogPageProps) {
                     <span
                       key={tag}
                       className="text-xs py-1 rounded text-foreground"
+                      style={
+                        {
+                          "--vt-name": getPostTagTransitionName(
+                            resolvedParams.name,
+                            tag,
+                          ),
+                        } as React.CSSProperties
+                      }
                     >
                       {tag}
                     </span>
@@ -205,6 +253,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
                 lightImage={blog.image}
                 darkImage={blog.imageDark}
                 alt={blog.title}
+                transitionName={getPostImageTransitionName(resolvedParams.name)}
               />
             )}
 
@@ -215,7 +264,8 @@ export default async function BlogPage({ params }: BlogPageProps) {
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeRaw]}
                 components={{
-                  h2({ children }: any) {
+                  img: MarkdownImage,
+                  h2({ children }: { children?: ReactNode }) {
                     const text = String(children);
                     const id = slugify(text);
                     return (
@@ -224,7 +274,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
                       </LinkableHeading>
                     );
                   },
-                  h3({ children }: any) {
+                  h3({ children }: { children?: ReactNode }) {
                     const text = String(children);
                     const id = slugify(text);
                     return (
@@ -233,7 +283,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
                       </LinkableHeading>
                     );
                   },
-                  h4({ children }: any) {
+                  h4({ children }: { children?: ReactNode }) {
                     const text = String(children);
                     const id = slugify(text);
                     return (
@@ -242,7 +292,16 @@ export default async function BlogPage({ params }: BlogPageProps) {
                       </LinkableHeading>
                     );
                   },
-                  code({ node, inline, className, children, ...props }: any) {
+                  code({
+                    inline,
+                    className,
+                    children,
+                    ...props
+                  }: {
+                    inline?: boolean;
+                    className?: string;
+                    children?: ReactNode;
+                  } & React.HTMLAttributes<HTMLElement>) {
                     const match = /language-(\w+)/.exec(className || "");
 
                     if (!inline && match) {
@@ -270,7 +329,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
             <PostNavigation prev={prev} next={next} />
 
             <div className="mt-12 pt-8 border-t border-border flex justify-center">
-              <Link
+              <ViewTransitionLink
                 href="/"
                 className="group inline-flex items-center justify-center gap-1 bg-primary text-primary-foreground px-4 py-3 rounded-md font-medium transition-colors text-base hover:underline"
               >
@@ -280,7 +339,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
                     →
                   </span>
                 </span>
-              </Link>
+              </ViewTransitionLink>
             </div>
           </article>
         </div>

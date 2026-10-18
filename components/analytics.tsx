@@ -3,24 +3,41 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
+// Non-standard browser APIs that TypeScript's lib.dom does not declare.
+interface NetworkInformation {
+  effectiveType?: string;
+  downlink?: number;
+  rtt?: number;
+}
+interface BatteryManager {
+  level: number;
+  charging: boolean;
+}
+interface ExtendedNavigator extends Navigator {
+  connection?: NetworkInformation;
+  deviceMemory?: number;
+  getBattery?: () => Promise<BatteryManager>;
+}
+
 export function Analytics() {
   const pathname = usePathname();
 
   useEffect(() => {
     const trackPageVisit = async () => {
-      const conn = (navigator as any).connection || {};
+      const nav = navigator as ExtendedNavigator;
+      const conn: NetworkInformation = nav.connection ?? {};
       const hasBatteryAPI = "getBattery" in navigator;
-      let bat = {
+      const bat = {
         level: null as number | null,
         charging: null as boolean | null,
       };
 
       if (hasBatteryAPI) {
         try {
-          const battery = await (navigator as any).getBattery();
+          const battery = await nav.getBattery!();
           bat.level = battery.level;
           bat.charging = battery.charging;
-        } catch (e) {
+        } catch {
           // Battery API error
         }
       }
@@ -42,7 +59,7 @@ export function Analytics() {
         orientation: screen.orientation?.type,
         batteryLevel: bat.level,
         charging: bat.charging,
-        deviceMemory: (navigator as any).deviceMemory,
+        deviceMemory: nav.deviceMemory,
         hardwareConcurrency: navigator.hardwareConcurrency,
         pageTitle: document.title,
         timestamp: new Date().toISOString(),

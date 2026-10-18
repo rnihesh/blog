@@ -10,7 +10,7 @@ export function ReadingProgress() {
       const scrollTop = window.scrollY;
       const docHeight = Math.max(
         document.body.scrollHeight,
-        document.documentElement.scrollHeight
+        document.documentElement.scrollHeight,
       );
       const windowHeight = window.innerHeight;
       const scrollableHeight = docHeight - windowHeight;
@@ -23,7 +23,7 @@ export function ReadingProgress() {
       // Use a small buffer to ensure we hit 100%
       const scrollPercent = Math.min(
         100,
-        (scrollTop / (scrollableHeight - 1)) * 100
+        (scrollTop / (scrollableHeight - 1)) * 100,
       );
       setProgress(Math.max(0, scrollPercent));
     };

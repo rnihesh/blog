@@ -1,12 +1,20 @@
 "use client";
 
-import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useCallback } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { SearchCommand } from "@/components/search-command";
 import { Pagination } from "@/components/pagination";
 import { Footer } from "@/components/footer";
+import { BlogPostImage } from "@/components/blog-post-image";
+import { ViewTransitionLink } from "@/components/view-transition-link";
+import {
+  getPostAuthorTransitionName,
+  getPostDateTransitionName,
+  getPostImageTransitionName,
+  getPostTagTransitionName,
+  getPostTitleTransitionName,
+} from "@/lib/view-transition-names";
 
 const POSTS_PER_PAGE = 4;
 const SCROLL_STORAGE_KEY = "home-scroll-position";
@@ -18,6 +26,8 @@ interface Post {
   date: string;
   excerpt: string;
   tags: string[];
+  image?: string;
+  imageDark?: string;
 }
 
 interface HomeClientProps {
@@ -85,7 +95,7 @@ export function HomeClient({ blogs }: HomeClientProps) {
       <div className="container mx-auto px-4 pt-7 pb-12 max-w-3xl">
         <header className="mb-10">
           <div className="flex items-center justify-between">
-            <h1 className="text-4xl font-bold">Nihesh's Blog</h1>
+            <h1 className="text-4xl font-bold">Nihesh&apos;s Blog</h1>
             <div className="ml-4">
               <ThemeToggle />
             </div>
@@ -107,39 +117,95 @@ export function HomeClient({ blogs }: HomeClientProps) {
               aria-labelledby={`post-${blog.name}`}
               className="border-b border-border pb-8 last:border-b-0"
             >
-              <h2 id={`post-${blog.name}`} className="text-2xl font-bold mb-2">
-                <Link href={`/${blog.name}`} className="group">
-                  <span className="group-hover:underline">{blog.title}</span>
-                </Link>
-              </h2>
+              <div className="flex items-start gap-4">
+                <div className="min-w-0 flex-1">
+                  <h2
+                    id={`post-${blog.name}`}
+                    className="text-2xl font-bold mb-2"
+                    style={
+                      {
+                        "--vt-name": getPostTitleTransitionName(blog.name),
+                      } as React.CSSProperties
+                    }
+                  >
+                    <ViewTransitionLink
+                      href={`/${blog.name}`}
+                      className="group"
+                    >
+                      <span className="group-hover:underline">
+                        {blog.title}
+                      </span>
+                    </ViewTransitionLink>
+                  </h2>
 
-              <address className="not-italic flex items-center text-sm text-muted-foreground mb-3">
-                <span>{blog.author}</span>
-                <span className="mx-2">•</span>
-                <time dateTime={blog.date}>{blog.date}</time>
-              </address>
-              <div className="flex items-start justify-between gap-4">
-                <p className="text-muted-foreground flex-1">{blog.excerpt}</p>
-                <Link
-                  href={`/${blog.name}`}
-                  className="text-foreground hover:underline whitespace-nowrap font-medium"
-                  aria-label={`Read more about ${blog.title}`}
-                >
-                  Read More →
-                </Link>
+                  <address className="not-italic flex items-center text-sm text-muted-foreground mb-3">
+                    <span
+                      style={
+                        {
+                          "--vt-name": getPostAuthorTransitionName(blog.name),
+                        } as React.CSSProperties
+                      }
+                    >
+                      {blog.author}
+                    </span>
+                    <span className="mx-2">•</span>
+                    <time
+                      dateTime={blog.date}
+                      style={
+                        {
+                          "--vt-name": getPostDateTransitionName(blog.name),
+                        } as React.CSSProperties
+                      }
+                    >
+                      {blog.date}
+                    </time>
+                  </address>
+
+                  <p className="text-muted-foreground mb-3">{blog.excerpt}</p>
+
+                  <ViewTransitionLink
+                    href={`/${blog.name}`}
+                    className="inline-block text-foreground hover:underline whitespace-nowrap font-medium"
+                    aria-label={`Read more about ${blog.title}`}
+                  >
+                    Read More →
+                  </ViewTransitionLink>
+                </div>
+
+                {blog.image && (
+                  <ViewTransitionLink
+                    href={`/${blog.name}`}
+                    className="shrink-0 self-center"
+                  >
+                    <BlogPostImage
+                      lightImage={blog.image}
+                      darkImage={blog.imageDark}
+                      alt={blog.title}
+                      className="w-24 sm:w-32 md:w-40"
+                      transitionName={getPostImageTransitionName(blog.name)}
+                      priority={false}
+                      sizes="(max-width: 640px) 96px, (max-width: 768px) 128px, 160px"
+                    />
+                  </ViewTransitionLink>
+                )}
               </div>
+
               <div className="flex flex-wrap gap-3 mt-4">
                 {blog.tags.map((tag) => (
                   <span
                     key={tag}
                     className="text-xs py-1 rounded text-foreground"
+                    style={
+                      {
+                        "--vt-name": getPostTagTransitionName(blog.name, tag),
+                      } as React.CSSProperties
+                    }
                   >
                     {tag}
                   </span>
                 ))}
               </div>
             </article>
-            // 003e67e80c809ecdf37f8277a20fec42df990f100f0e7e92a99be41531a98c9d
           ))}
         </div>
 

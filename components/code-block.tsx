@@ -88,14 +88,14 @@ export function CodeBlock({ language, children }: CodeBlockProps) {
           paddingRight: "1rem",
           paddingBottom: "1rem",
           paddingLeft: "1rem",
-          fontFamily: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
+          fontFamily: "var(--font-mono), ui-monospace, monospace",
           overflowX: "auto",
           ...(currentTheme === "light" && { backgroundColor: "#f6f8fa" }),
         }}
         codeTagProps={{
           style: {
             lineHeight: "1.5",
-            fontFamily: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
+            fontFamily: "var(--font-mono), ui-monospace, monospace",
           },
         }}
       >

@@ -23,12 +23,50 @@ function slugify(text: string): string {
     .trim();
 }
 
+/**
+ * Removes fenced code blocks before headings are parsed.
+ *
+ * Without this, a line like "## Non-negotiables" inside a ```markdown example is
+ * picked up as a real heading, producing a table-of-contents entry that links to
+ * an anchor the page never renders.
+ */
+function stripCodeFences(markdown: string): string {
+  const out: string[] = [];
+  let fence: string | null = null;
+
+  for (const line of markdown.split("\n")) {
+    const match = line.match(/^\s*(`{3,}|~{3,})/);
+
+    if (fence) {
+      // Close only on a matching fence character of at least the opening length.
+      if (
+        match &&
+        match[1][0] === fence[0] &&
+        match[1].length >= fence.length
+      ) {
+        fence = null;
+      }
+      continue;
+    }
+
+    if (match) {
+      fence = match[1];
+      continue;
+    }
+
+    out.push(line);
+  }
+
+  return out.join("\n");
+}
+
 function parseHeaders(markdown: string): TocItem[] {
   const headerRegex = /^(#{2,4})\s+(.+)$/gm;
   const headers: { level: number; text: string; id: string }[] = [];
 
   let match;
-  while ((match = headerRegex.exec(markdown)) !== null) {
+  const source = stripCodeFences(markdown);
+  while ((match = headerRegex.exec(source)) !== null) {
     const level = match[1].length;
     const text = match[2].trim();
     headers.push({ level, text, id: slugify(text) });
@@ -65,17 +103,14 @@ function parseHeaders(markdown: string): TocItem[] {
 function findParentIds(
   items: TocItem[],
   targetId: string,
-  path: string[] = []
+  path: string[] = [],
 ): string[] | null {
   for (const item of items) {
     if (item.id === targetId) {
       return path;
     }
     if (item.children.length > 0) {
-      const result = findParentIds(item.children, targetId, [
-        ...path,
-        item.id,
-      ]);
+      const result = findParentIds(item.children, targetId, [...path, item.id]);
       if (result) return result;
     }
   }
@@ -344,7 +379,7 @@ export function DesktopTableOfContents({ content }: TableOfContentsProps) {
     if (!activeId || !navRef.current) return;
 
     const activeElement = navRef.current.querySelector(
-      `[data-toc-id="${activeId}"]`
+      `[data-toc-id="${activeId}"]`,
     );
     if (activeElement) {
       const navRect = navRef.current.getBoundingClientRect();
@@ -439,10 +474,7 @@ export function DesktopTableOfContents({ content }: TableOfContentsProps) {
       className="hidden xl:block fixed right-8 w-56 z-40"
       style={{ top: `${topOffset}px` }}
     >
-      <nav
-        ref={navRef}
-        className="max-h-[calc(100vh-8rem)] overflow-y-auto"
-      >
+      <nav ref={navRef} className="max-h-[calc(100vh-8rem)] overflow-y-auto">
         <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 pl-5">
           On this page
         </h2>
