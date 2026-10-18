@@ -123,7 +123,7 @@ To find out, I planted 50 outages blind and gave **the same AI model** three dif
 <div class="bar-row"><span class="bar-label">Vector search</span><span class="bar-track"><span class="bar-fill" style="width: 8%"></span></span><span class="bar-value">8%</span></div>
 </figure>
 
-Twenty of the 50 outages were types the agent had never been prompted about, and it got all of them. It doesn't need a big model either: a small `qwen3:8b` running locally on my laptop also got every one right. Reading the whole catalog as text, even a much stronger model kept blaming changes that couldn't have caused the symptoms, like a config push for a latency spike.
+Twenty of the 50 outages were types the agent had never been prompted about, and it got all of them. Then I repeated the whole benchmark with five more models: four Claude models from the smallest to the largest, and a small `qwen3:8b` running locally on my laptop. **Every one of them got 50 out of 50 with the graph.** Reading the whole catalog as text, they ranged from 30% to 54%, and even the strongest kept blaming changes that couldn't have caused the symptoms, like a config push for a latency spike.
 
 ![The Live LLM runs table on the benchmark page: accuracy, held-out accuracy, tokens per case and fallback counts for each model and approach](/images/incident-commander-falkordb/benchmark.webp)
 
